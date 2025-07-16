@@ -1,0 +1,16 @@
+body {
+  font-family: sans-serif;
+}
+/* Reset global pour toutes les pages */
+.page-wrapper, .home, .container, main {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+}
+
+/* Annule tous les display:flex foireux */
+.page-wrapper, .home, .container, main {
+  display: block !important;
+}
