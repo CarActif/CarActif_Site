@@ -16,14 +16,14 @@ export default function Navbar() {
       </div>
 
       <div className={`nav-links ${isOpen ? "open" : ""}`}>
-        <Link to="/">🏠 Accueil</Link>
-        <Link to="/vendre">🚗 Vendez votre voiture</Link>
-        <Link to="/vehicules">🚙 Nos véhicules</Link>
-        <Link to="/equipe">🧑‍🤝‍🧑 Notre équipe</Link>
-        <Link to="/contact">📞 Contactez-nous</Link>
+        <Link to="/" onClick={() => setIsOpen(false)}>🏠 Accueil</Link>
+        <Link to="/vendre" onClick={() => setIsOpen(false)}>🚗 Vendez votre voiture</Link>
+        <Link to="/vehicules" onClick={() => setIsOpen(false)}>🚙 Nos véhicules</Link>
+        <Link to="/equipe" onClick={() => setIsOpen(false)}>🧑‍🤝‍🧑 Notre équipe</Link>
+        <Link to="/contact" onClick={() => setIsOpen(false)}>📞 Contactez-nous</Link>
       </div>
 
-      <div className="menu-icon" onClick={toggleMenu}>
+      <div className="burger" onClick={toggleMenu}>
         <div className="bar"></div>
         <div className="bar"></div>
         <div className="bar"></div>
