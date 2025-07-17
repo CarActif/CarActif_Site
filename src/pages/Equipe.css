@@ -1,0 +1,188 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+.equipe-page-wrapper {
+  min-height: 100vh;
+  width: 100vw;
+  background: linear-gradient(180deg, #232526 70%, #485563 100%);
+  font-family: 'Montserrat', sans-serif;
+  color: #f4f4f4;
+  padding: 2.5rem 0;
+  overflow-x: hidden;
+}
+
+.equipe-content-box {
+  background: #232526d7;
+  border-radius: 22px;
+  padding: 2.5rem 1.1rem 2.5rem 1.1rem;
+  max-width: 1250px;
+  margin: 0 auto;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.20);
+  text-align: center;
+  border: 2.5px solid #FFD70033;
+}
+
+.equipe-title {
+  font-size: 2.1rem;
+  color: #FFD700;
+  text-shadow: 0 2px 9px #2229;
+  margin-bottom: 1.6rem;
+  font-weight: 700;
+}
+
+.equipe-top {
+  display: flex;
+  justify-content: center;
+  gap: 3.5rem;
+  margin: 2.2rem 0 2.8rem 0;
+  flex-wrap: wrap;
+}
+
+.equipe-member {
+  text-align: center;
+  background: #1c1d21;
+  border-radius: 18px;
+  box-shadow: 0 2px 15px #0004;
+  padding: 2rem 1.4rem 1.2rem 1.4rem;
+  min-width: 220px;
+  max-width: 260px;
+  border: 2px solid #FFD70044;
+}
+
+.founder-photo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3.5px solid #FFD700;
+  margin-bottom: 0.7rem;
+  background: #fff;
+}
+
+.admin-name {
+  color: #FFD700;
+  font-weight: 700;
+  font-size: 1.17rem;
+  margin-bottom: 0.19rem;
+}
+
+.admin-role {
+  color: #20be63;
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+}
+
+.agents-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  margin-top: 2.2rem;
+}
+
+.agent-card {
+  background: #1c1d21;
+  border-radius: 17px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+  padding: 2.2rem 1rem 1.5rem 1rem;
+  width: 270px;
+  text-align: center;
+  border: 2px solid #FFD70044;
+  transition: box-shadow 0.18s, border-color 0.18s, transform 0.18s;
+}
+.agent-card:hover {
+  box-shadow: 0 10px 28px rgba(86, 171, 47, 0.13), 0 2px 8px #0007;
+  border-color: #FFD700;
+  transform: translateY(-6px) scale(1.02);
+}
+
+.agent-photo {
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #FFD700;
+  margin-bottom: 1rem;
+  background: #fff;
+}
+
+.agent-name {
+  color: #FFD700;
+  font-weight: 700;
+  font-size: 1.15rem;
+  margin-bottom: 0.19rem;
+}
+
+.agent-secteur {
+  color: #20be63;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  background: #2c3e5075;
+  padding: 0.2rem 0.9rem;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.btn-outline {
+  display: block;
+  margin: 1rem auto 0.5rem;
+  padding: 0.5rem 1.1rem;
+  border: 2px solid #FFD700;
+  color: #FFD700;
+  border-radius: 20px;
+  background: transparent;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.05rem;
+  transition: background 0.16s, color 0.16s;
+}
+.btn-outline:hover {
+  background: #FFD700;
+  color: #232526;
+}
+
+.btn-filled {
+  background: linear-gradient(90deg, #FFD700 60%, #20be63 120%);
+  color: #232526;
+  padding: 0.7rem 1.4rem;
+  border-radius: 25px;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 1.1rem;
+  display: inline-block;
+  margin-top: 0.2rem;
+  border: none;
+  box-shadow: 0 2px 12px #FFD70022;
+  transition: background 0.18s, color 0.18s;
+}
+.btn-filled:hover {
+  background: linear-gradient(90deg, #20be63 20%, #FFD700 100%);
+  color: #fff;
+  box-shadow: 0 2px 24px #FFD70033;
+}
+
+@media (max-width: 1050px) {
+  .equipe-top, .agents-grid {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .equipe-content-box {
+    padding: 1.2rem 0.1rem 2rem 0.1rem;
+    max-width: 98vw;
+  }
+}
+
+@media (max-width: 500px) {
+  .equipe-content-box {
+    border-radius: 10px;
+    padding: 0.7rem 0.04rem 1.4rem 0.04rem;
+  }
+  .equipe-member, .agent-card {
+    padding: 1rem 0.2rem;
+    min-width: unset;
+    width: 99vw;
+    max-width: 98vw;
+    border-radius: 8px;
+  }
+}
+
