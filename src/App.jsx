@@ -5,7 +5,6 @@ import VehiclePage from "./pages/VehiclePage";
 import './index.css';
 import Footer from './components/Footer';
 import MentionsLegales from './pages/MentionsLegales';
-import { Analytics } from "@vercel/analytics/react";
 
 import Home from './pages/Home';
 import Vendre from './pages/Vendre';
@@ -26,7 +25,7 @@ function App() {
         <Route path="/agent/:id" element={<AgentPage />} />
         <Route path="/vehicle/:id" element={<VehiclePage />} />
         <Route path="/mentions-legales" element={<MentionsLegales />} />
-        <Analytics />
+     
       </Routes>
       <Footer />
     </Router>
