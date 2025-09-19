@@ -1,0 +1,979 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+
+body {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(180deg, #F7FCF7 70%, #F7FCF7 100%);
+  color: #232526;
+}
+
+.home-wrapper {
+  min-height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+    background: linear-gradient(180deg, #F7FCF7 70%, #F7FCF7 100%);
+}
+
+/* HEADER/NAVBAR : à ajuster selon ton vrai header */
+
+/* HERO SECTION */
+.hero-section {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(rgba(245, 236, 220, 0.85), rgba(245, 236, 220, 0.85));
+  color: #232526;
+  text-align: center;
+  padding: 8rem 2rem 10rem 2rem;
+  width: 100%;
+  max-width: 100vw;
+  box-shadow: 0 8px 24px 0 rgba(86,171,47,0.08);
+  border-bottom-left-radius: 80px;
+  border-bottom-right-radius: 80px;
+  margin: 0 auto;
+}
+
+.hero-content h1 {
+  font-size: 3.2rem;
+  margin-bottom: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 2px 8px #23252633;
+}
+
+.hero-content p {
+  font-size: 1.3rem;
+  max-width: 650px;
+  margin: 0 auto;
+  line-height: 1.5;
+  color: #fff;
+  text-shadow: 0 2px 8px #23252622;
+}
+
+/* VEHICLES SECTION */
+.recent-vehicles-section {
+  margin: 0;
+  padding: 2.2rem 0 1.5rem 0;
+  width: 100vw;
+  max-width: 100vw;
+  background: none;
+  text-align: center;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.section-title {
+  font-size: 2.1rem;
+  color: #232526;
+  margin-bottom: 1rem;
+  text-shadow: none;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.section-subtitle {
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #222;
+  opacity: 0.75;
+  margin-bottom: 2.2rem;
+  line-height: 1.5;
+}
+
+.vehicule-cards-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.2rem;
+  width: 100vw;
+  max-width: 100vw;
+  margin: 0;
+  padding: 0 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  align-items: stretch;
+}
+
+.vehicule-card-home {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 12px rgba(86,171,47,0.09);
+  overflow: hidden;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
+  transition: transform 0.25s, box-shadow 0.25s;
+  border: 1px solid #ede7da;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding-bottom: 0.9rem;
+  align-items: stretch;
+}
+
+.vehicule-card-home:hover {
+  transform: translateY(-7px) scale(1.02);
+  box-shadow: 0 10px 24px rgba(86, 171, 47, 0.12), 0 2px 6px #0002;
+  border-color: #56ab2f;
+}
+
+.vehicule-card-home-img-wrapper {
+/* Filtre image pour statut "Sous offre" ou "Vendu" */
+.img-filter {
+  filter: grayscale(0.7) blur(1.5px);
+  opacity: 0.85;
+  transition: filter 0.2s, opacity 0.2s;
+}
+
+/* Badge statut discret */
+.statut-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(44,44,44,0.85);
+  color: #fff;
+  font-size: 0.98rem;
+  font-weight: 600;
+  padding: 0.18em 0.7em;
+  border-radius: 8px;
+  z-index: 3;
+  box-shadow: 0 2px 8px #23252622;
+  letter-spacing: 0.5px;
+  opacity: 0.97;
+  pointer-events: none;
+}
+.statut-offre {
+  background: linear-gradient(90deg, #FFD700 60%, #232526 120%);
+  color: #232526;
+}
+.statut-vendu {
+  background: linear-gradient(90deg, #56ab2f 60%, #232526 120%);
+  color: #fff;
+}
+  position: relative;
+  width: 100%;
+  height: 200px;
+  min-height: 200px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.vehicule-card-home img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-bottom: 2px solid #e7e2d7;
+  display: block;
+}
+
+.vehicule-card-home h4 {
+  min-height: 1.5em;
+  margin: 0.5rem 0 0.05rem 0;
+  font-size: 1.18rem;
+  color: #232526;
+  font-weight: 700;
+  text-shadow: none;
+  padding-left: 0.7rem;
+  padding-right: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vehicule-card-home p {
+  min-height: 1.2em;
+  margin: 0.12rem 0;
+  color: #232526;
+  font-size: 0.89rem;
+  padding-left: 0.7rem;
+  padding-right: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vehicule-card-home .vehicule-details {
+  font-size: 0.75rem;
+  color: #232526;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.7em;
+  padding: 0.3em 0.5rem 0 0.5rem;
+  border-top: 1px solid #f0f0f0;
+  margin-top: 0.3em;
+  flex-wrap: wrap;
+  text-align: center;
+  min-height: 1.2em;
+}
+.vehicule-card-home .vehicule-detail {
+  display: flex;
+  align-items: center;
+  gap: 0.09em;
+  font-size: 0.78rem;
+  color: #232526;
+  white-space: nowrap;
+  min-width: 80px;
+  justify-content: center;
+}
+.vehicule-card-home .vehicule-detail-emoji {
+  font-size: 0.95em;
+  margin-right: 0.09em;
+  vertical-align: middle;
+}
+.prix-badge {
+  position: absolute;
+  bottom: 10px;
+  right: 12px;
+  background: #fff;
+  color: #56ab2f;
+  font-weight: bold;
+  font-size: 1.08rem;
+  padding: 0.18em 0.7em;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px #56ab2f22;
+  z-index: 2;
+  border: 1px solid #e7e2d7;
+  min-width: 70px;
+  text-align: center;
+  opacity: 0.97;
+}
+
+.vehicule-type-line {
+  min-height: 1.2em;
+  margin: 0.12rem 0 0.12rem 0;
+  color: #232526;
+  font-size: 0.95rem;
+  padding-left: 0.7rem;
+  padding-right: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  font-style: italic;
+}
+.vehicule-type-line span {
+  min-width: 60px;
+  text-align: center;
+}
+
+/* CTA BUTTON */
+.btn-filled {
+  background: linear-gradient(90deg, #FFD700 60%, #56ab2f 120%);
+  color: #232526;
+  padding: 0.8rem 2rem;
+  border-radius: 30px;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 1.15rem;
+  transition: background 0.23s, color 0.23s;
+  display: inline-block;
+  margin-top: 1.3rem;
+  border: none;
+  box-shadow: 0 2px 12px #FFD70022;
+}
+
+.btn-filled:hover {
+  background: linear-gradient(90deg, #56ab2f 20%, #FFD700 100%);
+  color: #fff;
+  box-shadow: 0 2px 24px #FFD70033;
+}
+
+/* FEATURES SECTION */
+.features {
+  margin: 0 auto;
+  padding: 3.2rem 1rem;
+  text-align: center;
+  background: none;
+  max-width: 1200px;
+  border-radius: 0;
+  margin-bottom: 3rem;
+  box-shadow: none;
+}
+
+.features .section-title {
+  margin-bottom: 2.7rem;
+  color: #56ab2f;
+  text-shadow: none;
+}
+
+.feature {
+  margin-bottom: 2.7rem;
+  background: #fff;
+  border-radius: 16px;
+  padding: 2.2rem 2rem 1.2rem 2rem;
+  display: inline-block;
+  width: 46%;
+  min-width: 300px;
+  margin: 0.7rem 1.2%;
+  box-shadow: 0 2px 12px #ede7da;
+  vertical-align: top;
+}
+
+.feature .emoji {
+  font-size: 2.5rem;
+  margin-bottom: 0.9rem;
+  display: block;
+  filter: drop-shadow(0 3px 7px #FFD70088);
+}
+
+.feature h3 {
+  font-size: 1.34rem;
+  margin-bottom: 0.6rem;
+  color: #56ab2f;
+  font-weight: bold;
+  text-shadow: none;
+}
+
+.feature p {
+  font-size: 1.07rem;
+  color: #232526;
+  max-width: 420px;
+  margin: 0 auto;
+  line-height: 1.65;
+}
+
+/* Styles pour le bloc Pourquoi CarActif ? sur Home.jsx */
+.caractif-why-section {
+  margin: 3rem 0 2rem 0;
+  padding: 2rem 0;
+  background: none;
+}
+.caractif-why-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.caractif-why-subtitle {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+.caractif-why-baseline {
+  text-align: center;
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 2rem;
+}
+.caractif-why-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.caractif-why-card {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  padding: 1.5rem 1.2rem;
+  transition: box-shadow 0.2s;
+  border: 1px solid #f2f2f2;
+}
+.caractif-why-card h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+.caractif-why-card .web {
+  display: block;
+}
+.caractif-why-card .mobile {
+  display: none;
+}
+.caractif-why-encart {
+  width: 100%;
+  background: #f8f9fa;
+  border-radius: 1rem;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+  padding: 1.5rem 1.2rem;
+  margin-top: 0.5rem;
+  border: 1px solid #eaeaea;
+}
+.caractif-why-encart h3 {
+  text-align: left;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+/* Styles pour le bloc Nos engagements (Bloc 2) sur Home.jsx */
+.caractif-engagements-section {
+  margin: 3rem 0 2rem 0;
+  padding: 2rem 0;
+  background: none;
+}
+.caractif-engagements-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.caractif-engagements-subtitle {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 2rem;
+}
+.caractif-engagements-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.caractif-engagements-card {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  padding: 1.5rem 1.2rem;
+  transition: box-shadow 0.2s;
+  border: 1px solid #f2f2f2;
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.caractif-engagements-card h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+.caractif-engagements-card .web {
+  display: block;
+}
+.caractif-engagements-card .mobile {
+  display: none;
+}
+
+/* Styles pour le bloc Résultats & chiffres (Bloc 3) sur Home.jsx */
+.caractif-results-section {
+  margin: 3rem 0 2rem 0;
+  padding: 2rem 0;
+  background: none;
+}
+.caractif-results-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.caractif-results-subtitle {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 2rem;
+}
+.caractif-results-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.caractif-results-card {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  padding: 1.5rem 1.2rem;
+  transition: box-shadow 0.2s;
+  border: 1px solid #f2f2f2;
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.caractif-results-card h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+.caractif-results-card .web {
+  display: block;
+}
+.caractif-results-card .mobile {
+  display: none;
+}
+.caractif-results-encart {
+  width: 100%;
+  background: #f8f9fa;
+  border-radius: 1rem;
+  box-shadow: none;
+  padding: 1.5rem 1.2rem;
+  margin-top: 0.5rem;
+  border: 1px solid #eaeaea;
+}
+.caractif-results-encart h3 {
+  text-align: left;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+.caractif-results-encart ul {
+  padding-left: 1.2em;
+  margin: 0.5em 0 0 0;
+}
+.caractif-results-encart li {
+  margin-bottom: 0.5em;
+  font-size: 1rem;
+}
+.caractif-results-notes {
+  text-align: left;
+  margin-top: 0.5em;
+  color: #666;
+}
+.caractif-results-notes small {
+  font-size: 0.92em;
+}
+@media (min-width: 600px) {
+  .caractif-why-cards {
+    grid-template-columns: 1fr 1fr;
+  }
+  .caractif-engagements-cards {
+    grid-template-columns: 1fr 1fr;
+  }
+  .caractif-results-cards {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (min-width: 900px) {
+  .caractif-why-cards {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .caractif-results-cards {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+@media (min-width: 1200px) {
+  .caractif-why-cards {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+  .caractif-engagements-cards {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}
+@media (max-width: 500px) {
+  .caractif-why-card .web {
+    display: none;
+  }
+  .caractif-why-card .mobile {
+    display: block;
+    font-size: 0.98rem;
+    color: #444;
+  }
+  .caractif-engagements-card .web {
+    display: none;
+  }
+  .caractif-engagements-card .mobile {
+    display: block;
+    font-size: 0.98rem;
+    color: #444;
+  }
+  .caractif-results-card .web {
+    display: none;
+  }
+  .caractif-results-card .mobile {
+    display: block;
+    font-size: 0.98rem;
+    color: #444;
+  }
+}
+
+/* Amélioration UI/UX des blocs Pourquoi CarActif, Nos engagements, Résultats & chiffres */
+.section-surface {
+  background: var(--surface-subtle, #f6f8f7);
+  max-width: 1100px;
+  margin: 2.5rem auto;
+  border-radius: 1.5rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  padding: 3.2rem 1.5rem;
+  position: relative;
+}
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(80,80,80,0.13);
+  margin: 0 auto 2.5rem auto;
+}
+.chip-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7em;
+  background: var(--accent-light, #eaf7ee);
+  border: 1px solid var(--accent, #2ecc40);
+  border-radius: 999px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 1px 0px #fff inset;
+  padding: 0.5em 1.3em;
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: 0.04em;
+  margin: 0 auto 0.7em auto;
+  position: relative;
+}
+.chip-header .chip-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2em;
+  height: 2.2em;
+  border-radius: 50%;
+  background: var(--accent-xlight, #eaf7ee);
+  border: 1px solid var(--accent, #2ecc40);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  font-size: 1.3em;
+}
+.chip-header .chip-badge {
+  background: var(--accent, #2ecc40);
+  color: #fff;
+  font-size: 0.85em;
+  border-radius: 999px;
+  padding: 0.2em 0.7em;
+  margin-left: 0.7em;
+  font-weight: 600;
+}
+
+/* Cartes info */
+.info-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-bottom: 2.2rem;
+}
+.info-card {
+  background: #fff;
+  border-radius: 1.2rem;
+  border: 1px solid #e2e6e3;
+  border-top: 4px solid var(--accent, #2ecc40);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  padding: 2rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 180px;
+  transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
+  gap: 0.7em;
+}
+.info-card:hover, .info-card:focus {
+  box-shadow: 0 6px 24px rgba(46,204,64,0.13);
+  border-color: var(--accent, #2ecc40);
+  transform: translateY(-2px);
+  outline: 2px solid var(--accent, #2ecc40);
+}
+.info-card .card-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--accent-xlight, #eaf7ee);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5em;
+  margin-bottom: 0.5em;
+  border: 1px solid var(--accent, #2ecc40);
+}
+.info-card h3 {
+  font-size: 1.08rem;
+  font-weight: 700;
+  margin-bottom: 0.4em;
+  color: #222;
+  letter-spacing: 0.02em;
+}
+.info-card p {
+  color: #222;
+  opacity: 0.9;
+  font-size: 1rem;
+  line-height: 1.5;
+  max-width: 70ch;
+}
+
+/* Callout Bloc 1 */
+.callout {
+  background: var(--accent-xlight, #eaf7ee);
+  border: 1px solid var(--accent, #2ecc40);
+  border-radius: 1.2rem;
+  box-shadow: 0 1px 8px rgba(46,204,64,0.07);
+  padding: 1.5rem 1.2rem 1.2rem 1.2rem;
+  position: relative;
+  margin-top: 1.2rem;
+}
+.callout .callout-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--accent-xlight, #eaf7ee);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3em;
+  border: 1px solid var(--accent, #2ecc40);
+  margin-bottom: 0.5em;
+}
+.callout .callout-badge {
+  position: absolute;
+  top: 0.7em;
+  right: 1.2em;
+  background: var(--accent, #2ecc40);
+  color: #fff;
+  font-size: 0.85em;
+  border-radius: 999px;
+  padding: 0.2em 0.7em;
+  font-weight: 600;
+}
+.callout h3 {
+  font-size: 1.08rem;
+  font-weight: 700;
+  margin-bottom: 0.4em;
+  color: #222;
+}
+.callout p {
+  color: #222;
+  opacity: 0.9;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Step strip Bloc 2 */
+.step-strip {
+  display: flex;
+  gap: 0.5em;
+  margin-top: 0.7em;
+  margin-bottom: 0.2em;
+  justify-content: flex-start;
+}
+.step-dot {
+  width: 18px;
+  height: 7px;
+  border-radius: 6px;
+  background: #e2e6e3;
+  border: 1px solid var(--accent, #2ecc40);
+  opacity: 0.7;
+}
+.step-dot.active {
+  background: var(--accent, #2ecc40);
+  opacity: 1;
+}
+
+/* Bloc 3 Stat Cards */
+.stat-card {
+  background: #fff;
+  border-radius: 1.2rem;
+  border: 1px solid #e2e6e3;
+  border-top: 4px solid var(--accent, #2ecc40);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  padding: 2rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 180px;
+  align-items: flex-start;
+  gap: 0.7em;
+}
+.stat-card .stat-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--accent-xlight, #eaf7ee);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5em;
+  margin-bottom: 0.5em;
+  border: 1px solid var(--accent, #2ecc40);
+}
+.stat-card .stat-value {
+  font-size: 2.2rem;
+  font-family: var(--font-display, 'Inter', sans-serif);
+  font-weight: 800;
+  color: var(--accent, #2ecc40);
+  margin-bottom: 0.2em;
+}
+.stat-card .stat-label {
+  font-size: 1rem;
+  color: #222;
+  opacity: 0.8;
+  margin-bottom: 0.5em;
+}
+.stat-card p {
+  color: #222;
+  opacity: 0.9;
+  font-size: 1rem;
+  line-height: 1.5;
+  max-width: 70ch;
+}
+
+/* Comparatif Bloc 3 */
+.comparatif-table {
+  background: #f8f9fa;
+  border-radius: 1.2rem;
+  border: 1px solid #e2e6e3;
+  box-shadow: none;
+  padding: 1.5rem 1.2rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.7rem;
+  position: relative;
+}
+.comparatif-banner {
+  position: absolute;
+  top: -1.2em;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent-light, #eaf7ee);
+  color: var(--accent, #2ecc40);
+  font-size: 0.95em;
+  border-radius: 999px;
+  padding: 0.2em 1em;
+  font-weight: 600;
+  border: 1px solid var(--accent, #2ecc40);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+}
+.comparatif-table-row {
+  display: flex;
+  gap: 2em;
+  align-items: flex-start;
+  margin-bottom: 0.7em;
+}
+.comparatif-col {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7em;
+}
+.comparatif-col .comparatif-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2em;
+  border: 1px solid #e2e6e3;
+}
+.comparatif-col strong {
+  font-weight: 700;
+  color: #222;
+}
+.comparatif-col p {
+  color: #222;
+  opacity: 0.9;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Notes Bloc 3 */
+.results-notes {
+  text-align: left;
+  margin-top: 0.5em;
+  color: #666;
+  font-size: 0.92em;
+  opacity: 0.7;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1050px) {
+  .vehicule-cards-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.9rem;
+    width: 100vw;
+    max-width: 100vw;
+    padding: 0 0;
+    align-items: stretch;
+  }
+  .vehicule-card-home {
+    min-width: 0;
+    max-width: 100vw;
+    margin: 0;
+  }
+  .feature {
+    width: 90%;
+    min-width: unset;
+  }
+  .features {
+    padding: 2rem 0.3rem;
+  }
+  .recent-vehicles-section {
+    padding: 2rem 0 2rem 0;
+  }
+}
+@media (max-width: 768px) {
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+  .hero-content p {
+    font-size: 1rem;
+  }
+  .section-title {
+    font-size: 1.7rem;
+  }
+  .vehicule-cards-container {
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+    width: 100vw;
+    max-width: 100vw;
+    padding: 0 0;
+    align-items: stretch;
+  }
+  .vehicule-card-home {
+    min-width: 0;
+    max-width: 100vw;
+    margin: 0;
+  }
+}
+
+@media (max-width: 450px) {
+  .features, .recent-vehicles-section {
+    border-radius: 12px;
+    padding: 1.3rem 0;
+  }
+  .feature {
+    border-radius: 10px;
+    padding: 1.4rem 0.3rem;
+  }
+  .vehicule-cards-container {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    width: 100vw;
+    max-width: 100vw;
+    padding: 0 0;
+    align-items: stretch;
+  }
+  .vehicule-card-home {
+    min-width: 0;
+    max-width: 100vw;
+    margin: 0;
+  }
+}
+
+/* GENERAL SCROLL & OVERRIDES */
+
+html, body {
+  overflow-x: hidden !important;
+    background: linear-gradient(180deg, #F7FCF7 70%, #F7FCF7 100%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+

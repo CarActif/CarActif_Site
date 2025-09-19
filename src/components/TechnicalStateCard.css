@@ -1,0 +1,167 @@
+/* --- Nouvelle structure Contrôle Technique & État --- */
+.ts-section {
+  background: #fff;
+  border-radius: 1.2rem;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.07);
+  padding: 2rem 1.5rem 2.5rem 1.5rem;
+  margin: 2rem auto;
+  max-width: 650px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+@media (max-width: 700px) {
+  .equipements-list-responsive {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.5rem;
+    width: 100%;
+    align-items: flex-start;
+  }
+}
+.ts-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #22c55e;
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.ts-plaquettes {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.09);
+  padding: 0.7rem 1.2rem;
+  min-width: 160px;
+  text-align: center;
+  font-size: 1rem;
+  color: #222;
+  border: 1px solid #f3f3f3;
+  margin-bottom: 1.2rem;
+  margin-top: 1.2rem;
+}
+.ts-plaquettes-avant {
+  margin-bottom: 1.2rem;
+  margin-top: 0;
+}
+.ts-plaquettes-arriere {
+  margin-top: 1.2rem;
+  margin-bottom: 0;
+}
+.ts-pneus-schema-zone {
+  width: 100%;
+  display: grid;
+  grid-template-areas:
+    "av-g . av-d"
+    ". schema ."
+    "ar-g . ar-d";
+  grid-template-columns: 1fr 1.2fr 1fr;
+  grid-template-rows: auto 1fr auto;
+  gap: 1.2rem 1.2rem;
+  align-items: center;
+  justify-items: center;
+  max-width: 400px;
+  margin: 0 auto;
+}
+.ts-pneu-card {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.09);
+  padding: 0.7rem 0.5rem;
+  min-width: 90px;
+  max-width: 130px;
+  min-height: 48px;
+  max-height: 80px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: #222;
+  border: 1px solid #f3f3f3;
+}
+.ts-pneu-av-g { grid-area: av-g; }
+.ts-pneu-av-d { grid-area: av-d; }
+.ts-pneu-ar-g { grid-area: ar-g; }
+.ts-pneu-ar-d { grid-area: ar-d; }
+.ts-schema-center {
+  grid-area: schema;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+.ts-schema-img {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+  margin: 0 auto;
+  display: block;
+}
+.ts-distribution-row {
+  display: flex;
+  gap: 1.2rem;
+  margin-top: 2.2rem;
+  justify-content: center;
+  width: 100%;
+}
+.ts-distribution-card {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.09);
+  padding: 0.7rem 1.2rem;
+  min-width: 140px;
+  text-align: center;
+  font-size: 1rem;
+  color: #222;
+  border: 1px solid #f3f3f3;
+}
+@media (max-width: 700px) {
+  .ts-section {
+    padding: 1.2rem 0.3rem 1.5rem 0.3rem;
+    max-width: 98vw;
+  }
+  .ts-title {
+    font-size: 1.15rem;
+    margin-bottom: 1.2rem;
+  }
+  .ts-plaquettes {
+    min-width: 0;
+    width: 100%;
+    font-size: 0.95rem;
+    padding: 0.5rem 0.7rem;
+  }
+  .ts-pneus-schema-zone {
+    grid-template-areas:
+      "av-g"
+      "av-d"
+      "schema"
+      "ar-g"
+      "ar-d";
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(5, auto);
+    gap: 1rem 0;
+    max-width: 100%;
+  }
+  .ts-schema-img {
+    width: 90px;
+    height: 90px;
+  }
+  .ts-distribution-card {
+    min-width: 0;
+    width: 100%;
+    font-size: 0.95rem;
+    padding: 0.5rem 0.7rem;
+  }
+  .ts-distribution-row {
+    flex-direction: column;
+    gap: 0.7rem;
+    margin-top: 1.2rem;
+  }
+}
