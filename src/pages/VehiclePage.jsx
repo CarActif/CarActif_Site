@@ -191,6 +191,13 @@ export default function VehiclePage() {
               <dd className="infos-cles-value" title={vehicle.kilometrage.toLocaleString("fr-FR") + " km"}>{vehicle.kilometrage.toLocaleString("fr-FR") + " km"}</dd>
             </div>
           )}
+            {/* Boîte de vitesses */}
+            {vehicle.boite_vitesse && (
+              <div className="infos-cles-item">
+                <dt className="infos-cles-label">Boîte de vitesses</dt>
+                <dd className="infos-cles-value" title={vehicle.boite_vitesse}>{vehicle.boite_vitesse}</dd>
+              </div>
+            )}
           {/* Portes */}
           {vehicle.nb_portes && (
             <div className="infos-cles-item">
