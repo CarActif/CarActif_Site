@@ -1,0 +1,278 @@
+/* ─── ArtworkCard — carte véhicule, verre clair compact ───────────────────
+   Un seul jeu de règles piloté par les tokens (plus de bloc "dark override"
+   dupliqué par-dessus des couleurs claires codées en dur — les deux gardaient
+   des valeurs différentes et finissaient par se contredire). */
+.artwork-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 18px;
+  background: var(--surface);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    box-shadow 0.3s ease, border-color 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.artwork-card--interactive:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--border2);
+}
+
+.artwork-card--interactive:hover .artwork-card__media img {
+  transform: scale(1.04);
+}
+
+.artwork-card--disabled {
+  opacity: 0.68;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+/* ─── Bloc image + prix à cheval ─── */
+.artwork-card__top {
+  position: relative;
+  z-index: 2;
+}
+
+.artwork-card__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--bg-muted);
+}
+
+.artwork-card__media-corner {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.3rem;
+  max-width: calc(100% - 1.25rem);
+}
+
+.artwork-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.45s ease;
+}
+
+.artwork-card__media img.artwork-card__img--muted {
+  filter: grayscale(0.55) saturate(0.7);
+  opacity: 0.88;
+}
+
+.artwork-card__media-scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(30, 34, 51, 0) 60%, rgba(30, 34, 51, 0.18) 100%);
+}
+
+/* ─── Prix — bas droit de la photo, seule touche de couleur de la carte ─── */
+.artwork-card__price {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  z-index: 6;
+  margin: 0;
+  padding: 0.2rem 0.55rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  font-feature-settings: "tnum" 1;
+  color: var(--blue);
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 8px;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ─── Département — haut gauche image ─── */
+.artwork-card__location {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  max-width: 100%;
+  padding: 0.22rem 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  color: #fff;
+  background: rgba(30, 34, 51, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 7px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.artwork-card__location-icon {
+  flex-shrink: 0;
+  width: 11px;
+  height: 11px;
+  opacity: 0.95;
+}
+
+/* ─── Badges statut — pastille + libellé, lisibles et francs ─── */
+.artwork-card__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.28rem 0.6rem 0.28rem 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.artwork-card__badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.artwork-card__badge--offre {
+  background: #fff6e0;
+  color: #9a6300;
+}
+
+.artwork-card__badge--offre::before {
+  background: #d99400;
+}
+
+.artwork-card__badge--vendu {
+  background: rgba(30, 34, 51, 0.88);
+  color: #fff;
+}
+
+.artwork-card__badge--vendu::before {
+  background: #fff;
+  opacity: 0.8;
+}
+
+/* ─── Corps compact ─── */
+.artwork-card__body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0.9rem 0.85rem 0.8rem;
+}
+
+.artwork-card__headline {
+  min-width: 0;
+}
+
+.artwork-card__title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.artwork-card__subtitle {
+  margin: 0.15rem 0 0;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text2);
+  letter-spacing: -0.005em;
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ─── Grille specs 2×2 — lisible, neutre (le bleu reste réservé au prix) ─── */
+.artwork-card__specs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.4rem 0.5rem;
+  padding: 0.5rem 0.55rem;
+  border-radius: 10px;
+  background: var(--bg-muted);
+}
+
+.artwork-card__spec {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.005em;
+  line-height: 1.2;
+}
+
+.artwork-card__spec-icon {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  color: var(--text3);
+}
+
+.artwork-card__spec-value {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.artwork-card__spec-label {
+  display: none;
+}
+
+/* ─── Grille listing — plus de cartes par ligne, cartes plus compactes ─── */
+.artwork-card-grid .no-vehicules,
+.artwork-card-grid .no-vehicles {
+  grid-column: 1 / -1;
+}
+
+.artwork-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .artwork-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .artwork-card__body {
+    padding: 0.7rem 0.65rem 0.65rem;
+  }
+
+  .artwork-card__title {
+    font-size: 0.9rem;
+  }
+}

@@ -1,0 +1,179 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+.agentpage-wrapper {
+  min-height: 100vh;
+  width: 100vw;
+  padding: 2.6rem 1.25rem 3.4rem;
+  background: var(--bg);
+  font-family: 'Montserrat', sans-serif;
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+
+.agent-vehicles-title {
+  margin: 2.3rem 0 1rem 0;
+  font-size: 1.55rem;
+  color: var(--text);
+  text-align: center;
+  font-weight: 700;
+  text-shadow: none;
+  letter-spacing: var(--tracking-tight);
+}
+
+.agent-vehicles-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.4rem;
+  justify-content: center;
+  margin-bottom: 1.8rem;
+}
+@media (max-width: 1050px) {
+  .agent-vehicles-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.3rem;
+  }
+}
+@media (max-width: 768px) {
+  .agent-vehicles-grid {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+  }
+}
+@media (max-width: 450px) {
+  .agent-vehicles-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+}
+
+.agent-vehicle-card {
+  overflow: hidden;
+  width: 100%;
+  min-width: 0;
+  max-width: 340px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--text);
+  text-decoration: none;
+  position: relative;
+  padding-bottom: 0.9rem;
+}
+
+/* Filtre image pour statut "Sous offre" ou "Vendu" */
+.img-filter {
+  filter: grayscale(0.7) blur(1.5px);
+  opacity: 0.85;
+  transition: filter 0.2s, opacity 0.2s;
+}
+
+/* Badge statut discret */
+.statut-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(44,44,44,0.85);
+  color: #fff;
+  font-size: 0.98rem;
+  font-weight: 600;
+  padding: 0.18em 0.7em;
+  border-radius: 8px;
+  z-index: 3;
+  box-shadow: 0 2px 8px #23252622;
+  letter-spacing: 0.5px;
+  opacity: 0.97;
+  pointer-events: none;
+}
+.statut-offre {
+  background: rgba(0, 122, 255, 0.12);
+  color: var(--blue);
+  border: 1px solid rgba(0, 122, 255, 0.28);
+}
+.statut-vendu {
+  background: rgba(15, 23, 42, 0.72);
+  color: #fff;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+}
+
+.vehicle-img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-bottom: 1px solid var(--border);
+  display: block;
+  background: var(--bg-muted);
+}
+
+.agent-vehicle-info {
+  padding: 1.1rem 0.7rem 1rem 0.7rem;
+  text-align: center;
+  width: 100%;
+}
+
+.agent-vehicle-info h4 {
+  margin: 0.5rem 0 0.05rem 0;
+  font-size: 1.18rem;
+  color: var(--text);
+  font-weight: 700;
+  text-shadow: none;
+  padding-left: 0.7rem;
+  padding-right: 0.7rem;
+}
+.veh-details {
+  margin: 0.15rem 0 0.3rem 0;
+  color: var(--text-muted);
+  font-size: 0.97rem;
+}
+.veh-prix {
+  color: var(--accent);
+  font-weight: bold;
+  font-size: 1.15rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: 1px;
+  text-shadow: none;
+}
+
+/* Bouton CTA */
+.cta-container {
+  text-align: center;
+  margin-top: 0.7rem;
+}
+.btn-filled {
+  font-size: 1.11rem;
+  margin-top: 0.2rem;
+}
+
+/* Loading + no vehicle */
+.agentpage-loading,
+.no-vehicles {
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  margin: 2.7rem 0;
+  text-align: center;
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 900px) {
+  .agent-vehicles-grid {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.3rem;
+  }
+  .agent-vehicle-card {
+    min-width: 0;
+    max-width: 97vw;
+    margin: 0;
+  }
+}
+@media (max-width: 600px) {
+  .agent-vehicle-card {
+    min-width: 0;
+    max-width: 100vw;
+    margin: 0;
+    border-radius: 10px;
+    padding-bottom: 0.5rem;
+  }
+}
+

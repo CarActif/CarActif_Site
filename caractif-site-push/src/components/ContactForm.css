@@ -1,0 +1,121 @@
+.contact-form {
+  max-width: 480px;
+  margin: 0 auto;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.contact-form-honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.contact-form-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.contact-form-field {
+  flex: 1 1 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.contact-form-field label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.contact-form-field input,
+.contact-form-field textarea {
+  font-family: inherit;
+  font-size: 0.95rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid var(--border, #d1d5db);
+  background: var(--card, #fff);
+  color: var(--text);
+}
+
+.contact-form-field input:focus,
+.contact-form-field textarea:focus {
+  outline: none;
+  border-color: var(--accent, #4f46e5);
+  box-shadow: 0 0 0 2px var(--accent-light, #eef2ff);
+}
+
+/* Autofill Chrome/Safari : sans ça, le champ passe au fond bleu/jaune natif
+   du navigateur dès qu'il reconnaît une donnée déjà enregistrée (observé sur
+   Prénom/Nom/Téléphone/Email/Code postal — jamais sur Département, que
+   Chrome ne reconnaît pas comme un champ à autofill). La seule façon fiable
+   de neutraliser ça est l'astuce box-shadow inset géante : Chrome applique
+   sa propre couleur de fond au champ, mais pas à un box-shadow par-dessus. */
+.contact-form-field input:-webkit-autofill,
+.contact-form-field input:-webkit-autofill:hover,
+.contact-form-field input:-webkit-autofill:focus,
+.contact-form-field input:-webkit-autofill:active {
+  -webkit-text-fill-color: var(--text);
+  -webkit-box-shadow: 0 0 0 1000px var(--surface-solid, #fff) inset;
+  box-shadow: 0 0 0 1000px var(--surface-solid, #fff) inset;
+  caret-color: var(--text);
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+.contact-form-error {
+  font-size: 0.78rem;
+  color: #dc2626;
+}
+
+.contact-form-submit-error {
+  font-size: 0.85rem;
+  color: #dc2626;
+  text-align: center;
+}
+
+.contact-form-consent {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.contact-form-consent label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.contact-form-consent input[type="checkbox"] {
+  margin-top: 0.2rem;
+  flex-shrink: 0;
+}
+
+.contact-form-consent a {
+  color: var(--accent, #4f46e5);
+  text-decoration: underline;
+}
+
+.contact-form button[type="submit"] {
+  align-self: center;
+  margin-top: 0.5rem;
+}
+
+.contact-form-confirmation {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  text-align: center;
+  font-size: 1rem;
+  color: var(--text);
+  background: var(--accent-xlight, #eef2ff);
+  border-radius: 12px;
+}

@@ -1,0 +1,225 @@
+/* ─── Navbar — verre clair, neutre au repos ───────────────────────────── */
+/* Sélecteur "nav.navbar" (et pas juste ".navbar") : la règle générique
+   ".liquid-bg > *" dans index.css met position:relative + z-index:1 sur tous
+   les enfants directs de .liquid-bg, dont <nav>. Comme les deux règles ont la
+   même spécificité, celle chargée en dernier gagnait selon l'ordre d'import —
+   ce qui cassait le sticky/z-index et rendait le menu mobile invisible sous le
+   contenu de la page. On augmente la spécificité ici pour ne plus en dépendre. */
+nav.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  padding: 1rem 1rem 0.65rem;
+  background: transparent;
+  isolation: isolate;
+  transition: padding 0.3s ease;
+}
+
+nav.navbar.navbar--scrolled {
+  padding: 0.5rem 1rem;
+}
+
+.navbar__inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0.5rem 1.25rem;
+  min-height: 62px;
+  border-radius: 18px;
+  background: var(--surface2);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease, padding 0.3s ease;
+}
+
+.navbar--scrolled .navbar__inner {
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-md);
+  min-height: 54px;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .navbar__inner {
+    background: var(--surface-solid);
+  }
+}
+
+.navbar__inner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(255, 255, 255, 0) 45%,
+    rgba(255, 255, 255, 0.4) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.logo {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.logo img {
+  height: 52px;
+  width: auto;
+  display: block;
+  transition: height 0.3s ease;
+}
+
+.navbar--scrolled .logo img {
+  height: 42px;
+}
+
+.nav-links {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: var(--text2);
+  font-weight: 500;
+  font-size: 0.875rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  letter-spacing: -0.01em;
+  transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.nav-link:hover {
+  background: var(--accent-xlight);
+  color: var(--blue);
+}
+
+.nav-link--active {
+  background: var(--accent-light);
+  color: var(--blue);
+  box-shadow: inset 0 0 0 1px rgba(47, 92, 232, 0.25);
+}
+
+/* ─── Burger ─── */
+.burger {
+  position: relative;
+  z-index: 1;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  margin: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.bar {
+  display: block;
+  width: 18px;
+  height: 2px;
+  margin: 0 auto;
+  background-color: var(--text);
+  border-radius: 999px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.burger--open .bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.burger--open .bar:nth-child(2) {
+  opacity: 0;
+}
+
+.burger--open .bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  nav.navbar {
+    padding: 0.5rem 0.65rem;
+  }
+
+  .navbar__inner {
+    padding: 0.45rem 0.85rem;
+    border-radius: 16px;
+  }
+
+  .logo img {
+    height: 46px;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.25rem;
+    padding: 0.65rem;
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--surface-solid);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px) scale(0.98);
+    pointer-events: none;
+    transition: opacity 0.28s ease, transform 0.28s ease, visibility 0.28s ease;
+  }
+
+  .nav-links.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+
+  .nav-link {
+    text-align: center;
+    padding: 0.65rem 0.85rem;
+  }
+
+  .burger {
+    display: flex;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .navbar__inner,
+  .nav-links,
+  .burger {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: var(--surface-solid);
+  }
+}

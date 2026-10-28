@@ -1,0 +1,141 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+.vehicules-wrapper {
+  min-height: 100vh;
+  width: 100vw;
+  background: var(--bg);
+  font-family: 'Montserrat', sans-serif;
+  color: var(--text);
+  padding: 2.5rem 1.25rem 3.5rem;
+  overflow-x: hidden;
+}
+
+.catalogue-container {
+  max-width: 1300px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 280px 1fr; /* sidebar + contenu */
+  align-items: start;
+  gap: 1.2rem;
+  padding: 0;
+}
+
+.filter-panel {
+  position: sticky;
+  top: 20px;
+  height: fit-content;
+  color: var(--text);
+}
+
+.filter-panel h3 {
+  margin-bottom: 1.2rem;
+  color: var(--text);
+  font-weight: 700;
+  font-size: 1.25rem;
+  text-shadow: none;
+  letter-spacing: var(--tracking-tight);
+}
+
+.filter-panel select,
+.filter-panel input {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.59rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-muted);
+  color: var(--text);
+  font-size: 1.05rem;
+  font-family: inherit;
+  outline: none;
+  transition: border 0.14s, box-shadow 0.14s;
+  box-shadow: none;
+}
+
+.filter-panel select:focus,
+.filter-panel input:focus {
+  border: 1px solid rgba(0, 122, 255, 0.4);
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.12);
+}
+
+.vehicules-intro {
+  font-size: clamp(1.7rem, 2.7vw, 2.2rem);
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--text);
+  letter-spacing: var(--tracking-tight);
+}
+
+.vehicules-list {
+  align-content: start;
+}
+
+.no-vehicules {
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  margin-top: 2.2rem;
+  width: 100%;
+  text-align: center;
+  grid-column: 1 / -1;
+}
+
+/* Menu burger desktop caché */
+.filters-burger { display: none; }
+.filters-close { display: none; }
+.filters-backdrop { display: none; }
+
+/* Responsive */
+@media (max-width: 1050px) {
+  .catalogue-container {
+    grid-template-columns: 1fr; /* plus de colonne latérale */
+  }
+
+  .filters-burger {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    margin-left: 12px;
+    margin-bottom: 8px;
+  }
+
+  .filter-panel {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    width: 82vw; max-width: 360px;
+    height: 100vh;
+    border-radius: 0;
+    border-right: 1px solid var(--border);
+    transform: translateX(-100%);
+    transition: transform .3s ease;
+    z-index: 60;
+    margin: 0;
+  }
+
+  .filter-panel.open { transform: translateX(0); }
+
+  .filters-close {
+    display: inline-flex;
+    margin-bottom: 1rem;
+  }
+
+  .filters-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.35);
+    z-index: 50;
+  }
+
+  .vehicules-list {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .vehicule-card, .filter-panel {
+    border-radius: 7px;
+    padding: 0.7rem 0.2rem 1rem 0.2rem;
+  }
+}
+

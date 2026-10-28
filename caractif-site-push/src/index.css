@@ -1,0 +1,378 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Thème CarActif — clair, neutre, aéré. La couleur (bleu → violet) n'est
+   JAMAIS un fond de page ou de carte : elle n'apparaît que comme signal
+   (survol/actif, liens, chiffres clés, badges de statut, étape active).
+   Variables globales, utilisées par toutes les pages.
+
+   --blue / --purple : valeurs volontairement assombries par rapport à une
+   palette "pure" (#3B6CFF / #7A5CFF) pour que le texte sur fond blanc ET le
+   texte blanc sur fond dégradé passent tous les deux WCAG AA (4,5:1) — le
+   ratio de contraste est symétrique, une seule paire de valeurs sert donc
+   aux deux usages (lien/chiffre sur blanc, et bouton dégradé + texte blanc).
+   ───────────────────────────────────────────────────────────────────────── */
+:root {
+  /* Neutre — fond par défaut de tout le site */
+  --white: #ffffff;
+  --bg: #f7f8fc;
+  --bg-muted: #eef1f8;
+  --surface: rgba(255, 255, 255, 0.72);
+  --surface2: rgba(255, 255, 255, 0.92);
+  --surface-solid: #ffffff;
+  --border: #e6e8f0;
+  --border2: #d7dbe8;
+  --text: #1e2233;
+  --text2: #5b6278;
+  --text3: #8a90a3;
+  --text-muted: var(--text2);
+  --card: var(--surface);
+  --border-soft: var(--border);
+
+  --shadow-sm: 0 2px 10px rgba(30, 34, 51, 0.06);
+  --shadow-md: 0 12px 32px rgba(30, 34, 51, 0.1);
+  --shadow-lg: 0 28px 60px rgba(30, 34, 51, 0.14);
+  --radius-xl: 24px;
+
+  /* Signal — couleur réservée aux interactions et aux infos importantes */
+  --blue: #2f5ce8;
+  --purple: #7142e0;
+  --teal: #0c9a76;
+  --gradient-signal: linear-gradient(135deg, var(--blue), var(--purple));
+
+  /* Compat rétro : alias utilisés par ~25 fichiers CSS existants (Home,
+     VehiclePage, Equipe, AgentPage, Vendre, Vehicules, Contact...). On les
+     branche sur le signal bleu plutôt que de tout renommer d'un coup — la
+     migration page par page (étapes 3/4) remplacera ces usages au fil de
+     l'eau par des tokens plus précis quand nécessaire. */
+  --accent: var(--blue);
+  --accent-light: rgba(47, 92, 232, 0.12);
+  --accent-xlight: rgba(47, 92, 232, 0.06);
+
+  --green: #1a9a5c;
+  --orange: #b5670a;
+  --red: #d13b3b;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ─── Fond : blanc bleuté + orbes très discrets ───────────────────────────
+   Par défaut quasi invisibles (le site reste neutre) : seules les pages à
+   fort enjeu (accueil, contact, estimation) ajoutent la classe
+   `.liquid-bg--vivid` sur ce wrapper pour les rendre plus présents. Jamais
+   plus d'opacity 0.18 : ce sont des indices de profondeur, pas un décor. */
+.liquid-bg {
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: var(--bg);
+}
+
+.liquid-bg::before,
+.liquid-bg::after {
+  content: "";
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(110px);
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: 0;
+  animation: crmOrbFloat 20s ease-in-out infinite;
+  transition: opacity 0.4s ease;
+}
+
+.liquid-bg--vivid::before,
+.liquid-bg--vivid::after {
+  opacity: 0.16;
+}
+
+.liquid-bg::before {
+  width: min(62vw, 680px);
+  height: min(62vw, 680px);
+  top: -14%;
+  left: -12%;
+  background: radial-gradient(circle, var(--blue) 0%, rgba(47, 92, 232, 0) 68%);
+}
+
+.liquid-bg::after {
+  width: min(58vw, 620px);
+  height: min(58vw, 620px);
+  bottom: -16%;
+  right: -10%;
+  background: radial-gradient(circle, var(--purple) 0%, rgba(113, 66, 224, 0) 68%);
+  animation-delay: -10s;
+}
+
+/* Troisième orbe (teal), désactivé par défaut — réservé aux pages --vivid */
+.liquid-bg > .bg-orb-teal {
+  content: "";
+  position: fixed;
+  top: 38%;
+  left: 50%;
+  width: min(50vw, 560px);
+  height: min(50vw, 560px);
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(circle, var(--teal) 0%, rgba(12, 154, 118, 0) 68%);
+  animation: crmOrbFloat 24s ease-in-out infinite;
+  animation-delay: -5s;
+  transition: opacity 0.4s ease;
+}
+
+.liquid-bg--vivid > .bg-orb-teal {
+  opacity: 0.12;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .liquid-bg::before,
+  .liquid-bg::after,
+  .liquid-bg > .bg-orb-teal {
+    animation: none;
+  }
+}
+
+@media (max-width: 640px) {
+  /* Le blur coûte cher sur mobile : on réduit le rayon plutôt que de le retirer. */
+  .liquid-bg::before,
+  .liquid-bg::after,
+  .liquid-bg > .bg-orb-teal {
+    filter: blur(60px);
+  }
+}
+
+.liquid-bg > *:not(.bg-orb-teal):not(.navbar) {
+  position: relative;
+  z-index: 1;
+}
+
+.page-transition {
+  width: 100%;
+  min-height: 0;
+}
+
+@keyframes crmOrbFloat {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(36px, -28px) scale(1.06);
+  }
+  66% {
+    transform: translate(-28px, 22px) scale(0.96);
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-sans antialiased tracking-tight;
+    color: var(--text);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-semibold tracking-tighter;
+    color: var(--text);
+  }
+
+  p {
+    @apply font-normal leading-relaxed tracking-tight;
+    color: var(--text2);
+  }
+
+  a {
+    color: inherit;
+  }
+}
+
+@layer components {
+  .glass-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    box-shadow: var(--shadow-sm);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .glass-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--border2);
+    background: var(--surface2);
+    box-shadow: var(--shadow-md);
+  }
+
+  /* Fallback sans backdrop-filter (ou navigateur qui le désactive) : fond
+     quasi opaque pour garder le texte lisible sans l'effet verre. */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .glass-card {
+      background: var(--surface-solid);
+    }
+  }
+
+  .glass-pill {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 999px;
+  }
+
+  /* Bouton principal — neutre (anthracite) au repos, le dégradé bleu→violet
+     n'apparaît qu'au survol : la couleur signale l'interaction, elle ne
+     décore pas le bouton en permanence. */
+  .btn-primary {
+    @apply font-medium tracking-tight rounded-full px-6 py-2.5 border-0 cursor-pointer inline-flex items-center justify-center no-underline;
+    background: var(--text);
+    color: #fff;
+    box-shadow: var(--shadow-sm);
+    transition: background 0.3s ease, transform 0.15s ease, box-shadow 0.3s ease, filter 0.15s ease;
+  }
+
+  .btn-primary:hover {
+    background: var(--gradient-signal);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn-primary:active {
+    transform: translateY(0) scale(0.97);
+    filter: brightness(0.94);
+    transition-duration: 0.1s;
+  }
+
+  /* Bouton secondaire — verre neutre, pour les actions non prioritaires */
+  .btn-secondary {
+    @apply font-medium tracking-tight rounded-full px-6 py-2.5 cursor-pointer inline-flex items-center justify-center no-underline;
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    box-shadow: none;
+    transition: border-color 0.3s ease, color 0.3s ease, transform 0.15s ease, background 0.3s ease;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+    background: var(--accent-xlight);
+  }
+
+  .btn-secondary:active {
+    transform: scale(0.97);
+    transition-duration: 0.1s;
+  }
+
+  .link-accent {
+    @apply font-medium transition-colors duration-200 underline-offset-2 hover:underline;
+    color: var(--blue);
+  }
+
+  .icon-active {
+    color: var(--blue);
+  }
+
+  /* Conteneurs & cartes — glass uniforme */
+  .info-card,
+  .contact-card,
+  .advantage-card,
+  .equipe-card,
+  .admin-row,
+  .agent-hero-card,
+  .agent-vehicle-card,
+  .agent-header-compact-home,
+  .infos-cles-container,
+  .filter-panel,
+  .contact-page,
+  .vehicle-recap-card,
+  .mentions-page,
+  .callout,
+  .donut-container,
+  .technical-state-card,
+  .ts-section,
+  .vendre-page,
+  .gallery-part,
+  footer.site-footer {
+    @apply glass-card;
+  }
+
+  .info-card,
+  .contact-card,
+  .advantage-card,
+  .admin-row {
+    @apply p-6;
+  }
+
+  .filter-panel {
+    @apply p-5;
+  }
+
+  .contact-page {
+    @apply p-8 max-w-3xl mx-auto my-12 text-center;
+  }
+
+  .equipe-card {
+    @apply overflow-hidden;
+  }
+
+  .equipe-card {
+    @apply p-5 cursor-pointer;
+  }
+
+  .btn-filled,
+  .contact-button,
+  .contact-card button {
+    @apply btn-primary;
+  }
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Focus clavier — anneau bleu visible, sur tous les éléments interactifs */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--white), 0 0 0 4px var(--blue);
+  border-radius: 8px;
+}
+
+footer.site-footer {
+  color: var(--text2);
+}
+
+footer.site-footer a {
+  color: var(--blue);
+  text-decoration: none;
+}
+
+footer.site-footer a:hover {
+  color: var(--purple);
+}
+
