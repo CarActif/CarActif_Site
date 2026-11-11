@@ -1,55 +1,56 @@
-import React from "react";
+import "./MaintenanceHistory.css";
 
 function formatKm(km) {
-  return km ? km.toLocaleString("fr-FR").replace(/\s/g, '\u00A0') + " km" : "NC";
+  const n = Number(String(km ?? "").replace(/\s/g, ""));
+  return Number.isFinite(n) && n > 0 ? `${n.toLocaleString("fr-FR")} km` : "NC";
 }
 function formatDate(date) {
-  return date ? new Date(date).toLocaleDateString("fr-FR", { year: "numeric", month: "short", day: "numeric" }) : "NC";
+  const d = date ? new Date(date) : null;
+  return d && !Number.isNaN(d.getTime())
+    ? d.toLocaleDateString("fr-FR", { month: "short", year: "numeric" })
+    : "NC";
+}
+const PRESTATAIRES = {
+  concessionnaire: "Concessionnaire",
+  garage: "Garage",
+  constructeur: "Constructeur",
+  particulier: "Particulier",
+};
+function libellePrestataire(item) {
+  const v = String(item.prestataire || item.origine || "").trim().toLowerCase();
+  return PRESTATAIRES[v] || (v ? v.charAt(0).toUpperCase() + v.slice(1) : "");
 }
 
+/** Historique d'entretien : tableau simple, du plus récent au plus ancien. */
 export default function MaintenanceHistory({ entretien }) {
-  if (!entretien || entretien.length === 0)
-    return <p className="timeline-empty">Aucun historique d’entretien disponible.</p>;
+  const lignes = (Array.isArray(entretien) ? entretien : [])
+    .filter((e) => e && (e.date || e.km || e.description))
+    .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
 
-  // Tri descendant par date, filtre les enregistrements incomplets
-  const steps = entretien
-    .filter(e => e.date && e.km && e.description)
-    .sort((a, b) => new Date(b.date) - new Date(a.date));
+  if (lignes.length === 0) {
+    return <p className="entretien-vide">Aucun entretien renseigné pour ce véhicule.</p>;
+  }
 
   return (
-    <ol className="timeline-entretien" aria-label="Historique d'entretien du véhicule">
-      {steps.map((item, idx) => {
-        // Alternance gauche/droite desktop, pile mobile
-        const alt = idx % 2 === 0 ? "left" : "right";
-        // Badge origine (si présent)
-        let badge = null;
-        if (item.origine === "constructeur") badge = <span className="badge-constructeur">Constructeur</span>;
-        if (item.origine === "garage") badge = <span className="badge-garage">Garage</span>;
-        // Icône fine selon type (optionnel)
-        let icon = null;
-        if (/vidange|huile/i.test(item.description)) icon = <span className="timeline-icon" aria-label="Vidange">🛢️</span>;
-        if (/frein/i.test(item.description)) icon = <span className="timeline-icon" aria-label="Freins">🛑</span>;
-        if (/révision|revision/i.test(item.description)) icon = <span className="timeline-icon" aria-label="Révision">🔧</span>;
-        return (
-          <li key={idx} className={`timeline-step timeline-${alt}`}>
-            <div className="timeline-dot"></div>
-            <svg className="timeline-connector" viewBox="0 0 32 64" width="32" height="64" aria-hidden="true"><path d="M16 0 Q16 32 16 64" stroke="#4f46e5" strokeWidth="2" fill="none"/></svg>
-            <div className="timeline-content" tabIndex={0} aria-label={`Intervention du ${formatDate(item.date)} à ${formatKm(item.km)}`}>
-              <div className="timeline-header">
-                <span className="timeline-date" title={formatDate(item.date)}>{formatDate(item.date)}</span>
-                <span className="timeline-km" title={formatKm(item.km)}>{formatKm(item.km)}</span>
-              </div>
-              <div className="timeline-type">
-                {icon}
-                <span className="timeline-desc" title={item.description.length > 40 ? item.description : undefined}>
-                  {item.description.length > 40 ? item.description.slice(0, 40) + "…" : item.description}
-                </span>
-              </div>
-              {badge && <span className="timeline-badge" aria-label={`Origine: ${item.origine}`}>{badge}</span>}
-            </div>
-          </li>
-        );
-      })}
-    </ol>
+    <div className="entretien">
+      <p className="entretien__resume">
+        {lignes.length} entretien{lignes.length > 1 ? "s" : ""} enregistré{lignes.length > 1 ? "s" : ""}, dernier en {formatDate(lignes[0].date)} à {formatKm(lignes[0].km)}.
+      </p>
+      <table className="entretien__table">
+        <thead>
+          <tr><th>Date</th><th>Kilométrage</th><th>Intervention</th><th>Réalisé par</th></tr>
+        </thead>
+        <tbody>
+          {lignes.map((it, i) => (
+            <tr key={i}>
+              <td data-label="Date">{formatDate(it.date)}</td>
+              <td data-label="Kilométrage">{formatKm(it.km)}</td>
+              <td data-label="Intervention">{it.description || "NC"}</td>
+              <td data-label="Réalisé par">{libellePrestataire(it) || "NC"}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }

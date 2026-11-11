@@ -1,0 +1,15 @@
+.entretien { margin-top: .8rem; }
+.entretien__resume { margin: 0 0 .5rem; font-size: .9rem; color: #334155; }
+.entretien__table { width: 100%; border-collapse: collapse; font-size: .95rem; background: #fff; border: 1px solid var(--border, #d3d9e3); border-radius: 10px; overflow: hidden; }
+.entretien__table th { text-align: left; background: #eef2f7; color: #0b1a2e; font-weight: 700; font-size: .82rem; padding: .5rem .75rem; }
+.entretien__table td { padding: .5rem .75rem; border-top: 1px solid var(--border, #d3d9e3); color: #0b1a2e; }
+.entretien__table tbody tr:first-child td { font-weight: 600; }
+.entretien-vide { margin: .6rem 0 0; color: #475569; font-size: .95rem; text-align: left; }
+@media (max-width: 600px) {
+  .entretien__table thead { display: none; }
+  .entretien__table, .entretien__table tbody, .entretien__table tr, .entretien__table td { display: block; width: 100%; }
+  .entretien__table tr { padding: .4rem .2rem; border-top: 1px solid var(--border, #d3d9e3); }
+  .entretien__table tr:first-child { border-top: 0; }
+  .entretien__table td { border: 0; padding: .15rem .6rem; display: flex; justify-content: space-between; gap: 1rem; }
+  .entretien__table td::before { content: attr(data-label); color: #475569; font-weight: 500; }
+}
