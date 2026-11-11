@@ -1000,3 +1000,30 @@
   border-color: rgba(255, 159, 10, 0.35);
 }
 
+
+/* ─── Mise en page compacte (moins de blanc) ─── */
+.vehiclepage-wrapper { padding: 1rem 1rem 1.5rem; }
+.photo-agent-wrapper { gap: 1rem; margin-bottom: 1rem; }
+.infos-cles-container { padding: 1rem 1.1rem; margin: 0 auto 1rem; max-width: 1000px; }
+.infos-cles-container .bloc-title, .bloc-title { font-size: 1.2rem; margin: 0 0 .6rem; }
+.infos-cles-list { gap: .4rem 1.2rem; margin: .6rem 0 0; }
+.infos-cles-item { height: auto; padding: .35em 0; border-bottom: 1px solid var(--border); }
+.infos-cles-label { font-size: .85rem; margin-bottom: 0; min-height: 0; }
+.infos-cles-value { font-size: 1rem; min-height: 0; white-space: normal; }
+.commentaire-essai { margin-top: .6rem; }
+.vehicle-gallery-panel, .gallery-part { padding: .8rem; }
+
+/* En-tête de fiche : photos à gauche, agent + prix à droite, sans trous */
+.photo-agent-wrapper { display: grid; grid-template-columns: minmax(0, 1fr) 300px; align-items: start; max-width: 1000px; }
+.side-cards-wrapper { display: flex; flex-direction: column; gap: .75rem; width: 100%; margin: 0; }
+.side-cards-wrapper > * { margin: 0 !important; max-width: none !important; width: 100%; }
+.agent-hero-card { flex-direction: row !important; text-align: left !important; gap: .8rem; padding: .8rem !important; flex-wrap: wrap; justify-content: flex-start; }
+.agent-avatar { width: 64px !important; height: 64px !important; margin: 0 !important; border-width: 3px !important; flex: none; }
+.agent-title { margin: 0 !important; padding: 0 !important; font-size: 1.05rem !important; flex: 1; align-self: center; }
+.agent-secteur { margin: 0 !important; }
+.agent-contact { margin: 0 !important; width: 100%; font-size: .95rem !important; }
+.agent-contact .tel-link, .agent-contact .mail-link { font-size: .95rem !important; }
+.vehicle-gallery-empty { margin: .3rem 0; }
+.infos-cles-container .vehicle-title { font-size: 1.5rem; margin: 0 0 .4rem; }
+.pneus-schema__svg { max-width: 300px; }
+@media (max-width: 800px) { .photo-agent-wrapper { grid-template-columns: 1fr; } }

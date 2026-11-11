@@ -296,10 +296,10 @@ export default function VehiclePage() {
         <section className="infos-cles-container" aria-labelledby="controle-technique-title">
           <h3 id="controle-technique-title" className="bloc-title">🛠️ Contrôle Technique & État</h3>
           <PneusSchema
-            avG={vehicle?.pneu_av_g}
-            avD={vehicle?.pneu_av_d}
-            arG={vehicle?.pneu_ar_g}
-            arD={vehicle?.pneu_ar_d}
+            avG={{ ext: vehicle?.pneu_av_g, int: vehicle?.pneu_av_g_int }}
+            avD={{ ext: vehicle?.pneu_av_d, int: vehicle?.pneu_av_d_int }}
+            arG={{ ext: vehicle?.pneu_ar_g, int: vehicle?.pneu_ar_g_int }}
+            arD={{ ext: vehicle?.pneu_ar_d, int: vehicle?.pneu_ar_d_int }}
           />
           <dl className="infos-cles-list">
             {/* Plaquettes */}
