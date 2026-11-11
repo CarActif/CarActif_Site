@@ -1,387 +1,276 @@
-import PneusSchema from "../components/PneusSchema";
-import GarantieInclusse from "../components/GarantieInclusse";
-import usePageMeta from "../lib/usePageMeta";
-import { useParams } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import {
+  ArrowLeft, Calendar, Gauge, Fuel, Settings2, MapPin, Phone, ChevronLeft, ChevronRight,
+  ShieldCheck, Lock, BadgeCheck, CircleDot, Disc3, Link2, Cog, Wrench, Car, Armchair, ClipboardList,
+} from "lucide-react";
 import supabase from "../supabase";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
-import { Link } from "react-router-dom";
-
-import "swiper/css";
-import "swiper/css/navigation";
-import "./VehiclePage.css";
-import "../styles/controle-technique-etat.css";
+import usePageMeta from "../lib/usePageMeta";
+import PneusSchema, { versNombre, couleurContinue, etatUsure } from "../components/PneusSchema";
+import GarantieInclusse from "../components/GarantieInclusse";
 import MaintenanceHistory from "../components/MaintenanceHistory";
-import VehicleRecapCard from "../components/VehicleRecapCard";
 import { getAnneeYear } from "../utils/mandats";
+import { getBoiteVitesseFromVehicle } from "../utils/boiteVitesse";
+import "./VehiclePage.css";
 
-export default function VehiclePage() {
-  const { id } = useParams();
-  const [vehicle, setVehicle] = useState(null);
-  const [showAllInfos, setShowAllInfos] = useState(false);
-  const [activePhotoIndex, setActivePhotoIndex] = useState(0);
-  const swiperRef = useRef(null);
+const fmtKm = (km) => (km ? `${Number(km).toLocaleString("fr-FR")} km` : null);
+const fmtPrix = (p) => (p != null ? `${Number(p).toLocaleString("fr-FR")} €` : "Prix sur demande");
 
-  useEffect(() => {
-    const fetchVehicle = async () => {
-      const { data } = await supabase
-        .from("mandats")
-        .select(`
-          *,
-          agents:agent_id (
-            prenom,
-            nom,
-            telephone,
-            photo_url,
-            secteur,
-            email
-          )
-        `)
-        .eq("id", id)
-        .single();
-
-      setVehicle(data);
-    };
-
-    fetchVehicle();
-  }, [id]);
-
-  usePageMeta(
-    vehicle ? `${vehicle.marque} ${vehicle.modele}` : "Véhicule",
-    vehicle ? `${vehicle.marque} ${vehicle.modele} ${vehicle.annee ?? ""} en vente avec CarActif : état détaillé, garantie 3 mois incluse, paiement sécurisé par séquestre.` : undefined
-  );
-
-  if (!vehicle)
-    return (
-      <p style={{ textAlign: "center", color: "#FFD700", fontSize: "1.5rem" }}>
-        Chargement...
-      </p>
-    );
-
+function Ligne({ label, children }) {
+  if (children === null || children === undefined || children === "") return null;
   return (
-    <div className="vehiclepage-wrapper">
-      <div className="photo-agent-wrapper">
-        <section className="gallery-part glass-card vehicle-gallery-panel" aria-label="Galerie photos">
-          <h2 className="bloc-title vehicle-gallery-title">Galerie Photos</h2>
-
-          {vehicle.photo_url?.length > 0 ? (
-            <>
-              <div className="photo-container">
-                <Swiper
-                  modules={[Navigation]}
-                  navigation
-                  className="main-swiper-modern vehicle-gallery-swiper"
-                  spaceBetween={10}
-                  slidesPerView={1}
-                  onSwiper={(swiper) => {
-                    swiperRef.current = swiper;
-                  }}
-                  onSlideChange={(swiper) => setActivePhotoIndex(swiper.activeIndex)}
-                >
-                  {vehicle.photo_url.map((url, index) => (
-                    <SwiperSlide key={index}>
-                      <img
-                        src={url}
-                        alt={`Photo ${index + 1}`}
-                        className="photo-slide-img vehicle-gallery-main-img"
-                      />
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
-              </div>
-
-              <div className="thumb-container vehicle-gallery-thumbs">
-                {vehicle.photo_url.map((url, index) => (
-                  <button
-                    key={index}
-                    type="button"
-                    className={`vehicle-gallery-thumb${index === activePhotoIndex ? " is-active" : ""}`}
-                    aria-label={`Afficher la photo ${index + 1}`}
-                    onClick={() => {
-                      setActivePhotoIndex(index);
-                      swiperRef.current?.slideTo(index);
-                    }}
-                  >
-                    <img src={url} alt="" className="thumb-img-modern" />
-                  </button>
-                ))}
-              </div>
-            </>
-          ) : (
-            <p className="vehicle-gallery-empty">Aucune photo disponible.</p>
-          )}
-        </section>
-        {/* Colonne droite : agent + recap card */}
-  <div className="side-cards-wrapper">
-          <Link
-            to={`/agent/${vehicle.agent_id}`}
-            className="agent-hero-card agent-hero-link"
-            style={{ textDecoration: "none" }}
-          >
-            <img
-              src={
-                vehicle.agents?.photo_url ||
-                "https://via.placeholder.com/160x160.png?text=No+Photo"
-              }
-              alt={vehicle.agents?.nom || "Agent"}
-              className="agent-avatar"
-            />
-            <h2 className="agent-title">
-              {vehicle.agents?.prenom} <span className="agent-nom">{vehicle.agents?.nom}</span>
-            </h2>
-            <div className="agent-secteur">
-              {vehicle.agents?.secteur && (
-                <>
-                  Secteur : <b>{vehicle.agents.secteur}</b>
-                </>
-              )}
-            </div>
-            <div className="agent-contact">
-              <div>
-                <b>📞</b>{" "}
-                <span className="tel-link">{vehicle.agents?.telephone || "Non renseigné"}</span>
-              </div>
-              {vehicle.agents?.email && (
-                <div>
-                  <b>✉️</b>{" "}
-                  <span className="mail-link">{vehicle.agents.email}</span>
-                </div>
-              )}
-            </div>
-          </Link>
-          <VehicleRecapCard
-            marque={vehicle.marque}
-            modele={vehicle.modele}
-            annee={getAnneeYear(vehicle.annee) || ''}
-            carburant={vehicle.energie}
-            prix={vehicle.prix_affiche ? vehicle.prix_affiche.toLocaleString("fr-FR") : 'Prix sur demande'}
-            finition={vehicle.finition}
-            version={vehicle.version}
-            kilometrage={vehicle.kilometrage}
-          />
-        </div>
-      </div>
-
-      {/* Bloc Infos générales */}
-      <section className="infos-cles-container" aria-labelledby="infos-cles-title">
-        <h2 id="infos-cles-title" className="vehicle-title">
-          {vehicle.marque} {vehicle.modele}
-        </h2>
-  {/* Le prix est maintenant affiché dans la carte récapitulative */}
-        <dl className="infos-cles-list">
-          {/* Finition */}
-          {vehicle.finition && (
-            <div className="infos-cles-item">
-              <dt className="infos-cles-label">Finition</dt>
-              <dd className="infos-cles-value" title={vehicle.finition}>{vehicle.finition}</dd>
-            </div>
-          )}
-          {/* Version */}
-          {vehicle.version && (
-            <div className="infos-cles-item">
-              <dt className="infos-cles-label">Version</dt>
-              <dd className="infos-cles-value" title={vehicle.version}>{vehicle.version}</dd>
-            </div>
-          )}
-          {/* Année */}
-          {vehicle.annee && (
-            <div className="infos-cles-item">
-              <dt className="infos-cles-label">Année</dt>
-              <dd className="infos-cles-value" title={getAnneeYear(vehicle.annee)}>{getAnneeYear(vehicle.annee)}</dd>
-            </div>
-          )}
-          {/* Kilométrage */}
-          {vehicle.kilometrage && (
-            <div className="infos-cles-item">
-              <dt className="infos-cles-label">Kilométrage</dt>
-              <dd className="infos-cles-value" title={vehicle.kilometrage.toLocaleString("fr-FR") + " km"}>{vehicle.kilometrage.toLocaleString("fr-FR") + " km"}</dd>
-            </div>
-          )}
-            {/* Boîte de vitesses */}
-            {vehicle.boite_vitesse && (
-              <div className="infos-cles-item">
-                <dt className="infos-cles-label">Boîte de vitesses</dt>
-                <dd className="infos-cles-value" title={vehicle.boite_vitesse}>{vehicle.boite_vitesse}</dd>
-              </div>
-            )}
-          {/* Portes */}
-          {vehicle.nb_portes && (
-            <div className="infos-cles-item">
-              <dt className="infos-cles-label">Portes</dt>
-              <dd className="infos-cles-value" title={vehicle.nb_portes}>{vehicle.nb_portes}</dd>
-            </div>
-          )}
-          {/* Places */}
-          {vehicle.nb_places && (
-            <div className="infos-cles-item">
-              <dt className="infos-cles-label">Places</dt>
-              <dd className="infos-cles-value" title={vehicle.nb_places}>{vehicle.nb_places}</dd>
-            </div>
-          )}
-          {/* Couleur Extérieure */}
-          {vehicle.couleur && (
-            <div className="infos-cles-item">
-              <dt className="infos-cles-label">Couleur Extérieure</dt>
-              <dd className="infos-cles-value" title={vehicle.couleur}>{vehicle.couleur}</dd>
-            </div>
-          )}
-          {/* Couleur Intérieure */}
-          {vehicle.couleur_interieure && (
-            <div className="infos-cles-item">
-              <dt className="infos-cles-label">Couleur Intérieure</dt>
-              <dd className="infos-cles-value" title={vehicle.couleur_interieure}>{vehicle.couleur_interieure}</dd>
-            </div>
-          )}
-          {/* Crit'Air */}
-          {vehicle.critair && (
-            <div className="infos-cles-item">
-              <dt className="infos-cles-label">Crit'Air</dt>
-              <dd className="infos-cles-value" title={vehicle.critair}>
-                <span className="critair-badge" aria-label={`Vignette Crit'Air ${vehicle.critair}`} data-critair={vehicle.critair}>{vehicle.critair}</span>
-              </dd>
-            </div>
-          )}
-          {/* Motorisation */}
-          {vehicle.motorisation && (
-            <div className="infos-cles-item">
-              <dt className="infos-cles-label">Motorisation</dt>
-              <dd className="infos-cles-value">{vehicle.motorisation}</dd>
-            </div>
-          )}
-          {/* Carburant */}
-          {vehicle.energie && (
-            <div className="infos-cles-item">
-              <dt className="infos-cles-label">Carburant</dt>
-              <dd className="infos-cles-value">{vehicle.energie}</dd>
-            </div>
-          )}
-          {/* Puissance DIN */}
-          {vehicle.puissance_din && (
-            <div className="infos-cles-item">
-              <dt className="infos-cles-label">Puissance DIN</dt>
-              <dd className="infos-cles-value">{vehicle.puissance_din} ch</dd>
-            </div>
-          )}
-          {/* Puissance Fiscale */}
-          {vehicle.puissance_fiscale && (
-            <div className="infos-cles-item">
-              <dt className="infos-cles-label">Puissance Fiscale</dt>
-              <dd className="infos-cles-value">{vehicle.puissance_fiscale} CV</dd>
-            </div>
-          )}
-          {/* Localisation */}
-          {(vehicle.ville || vehicle.departement) && (
-            <div className="infos-cles-item">
-              <dt className="infos-cles-label">Localisation</dt>
-              <dd className="infos-cles-value localisation-value">
-                <span className="icon-pin" aria-hidden="true"></span>
-                {vehicle.ville}
-                {vehicle.ville && vehicle.departement ? ` (${vehicle.departement})` : vehicle.departement ? vehicle.departement : ""}
-              </dd>
-            </div>
-          )}
-        </dl>
-        {vehicle.infos_url && (
-          <div className="infos-cles-link-wrapper">
-            <a href={vehicle.infos_url} className="infos-cles-link" target="_blank" rel="noopener noreferrer">
-              Voir toutes les informations
-            </a>
-          </div>
-        )}
-      </section>
-
-      {/* Bloc Contrôle Technique & État */}
-
-        <section className="infos-cles-container" aria-labelledby="controle-technique-title">
-          <h3 id="controle-technique-title" className="bloc-title">🛠️ Contrôle Technique & État</h3>
-          <PneusSchema
-            avG={{ ext: vehicle?.pneu_av_g, int: vehicle?.pneu_av_g_int }}
-            avD={{ ext: vehicle?.pneu_av_d, int: vehicle?.pneu_av_d_int }}
-            arG={{ ext: vehicle?.pneu_ar_g, int: vehicle?.pneu_ar_g_int }}
-            arD={{ ext: vehicle?.pneu_ar_d, int: vehicle?.pneu_ar_d_int }}
-          />
-          <dl className="infos-cles-list">
-            {/* Plaquettes */}
-            {[
-              { label: "Plaquettes Avant", value: vehicle?.plaquettes_av },
-              { label: "Plaquettes Arrière", value: vehicle?.plaquettes_ar }
-            ].map((plaq) => (
-              <div className="infos-cles-item" key={plaq.label}>
-                <dt className="infos-cles-label">{plaq.label}</dt>
-                <dd className="infos-cles-value">{plaq.value || 'NC'}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
-
-      {/* Bloc État Moteur & Essai Routier */}
-      <section className="infos-cles-container" aria-labelledby="etat-moteur-title">
-        <h3 id="etat-moteur-title" className="bloc-title">🔧 État Moteur & Essai Routier</h3>
-        <dl className="infos-cles-list">
-          <div className="infos-cles-item">
-            <dt className="infos-cles-label">État de l’huile</dt>
-            <dd className="infos-cles-value">{vehicle.huile_moteur || "NC"}</dd>
-          </div>
-          <div className="infos-cles-item">
-            <dt className="infos-cles-label">Fuite d’huile</dt>
-            <dd className="infos-cles-value">{vehicle.fuite_huile || "NC"}</dd>
-          </div>
-          <div className="infos-cles-item">
-            <dt className="infos-cles-label">État de l’embrayage</dt>
-            <dd className="infos-cles-value">{vehicle.embrayage || "NC"}</dd>
-          </div>
-          <div className="infos-cles-item">
-            <dt className="infos-cles-label">Vibrations observées</dt>
-            <dd className="infos-cles-value">{vehicle.vibrations || "NC"}</dd>
-          </div>
-          <div className="infos-cles-item">
-            <dt className="infos-cles-label">Type de Distribution</dt>
-            <dd className="infos-cles-value">{vehicle.type_distribution || "NC"}</dd>
-          </div>
-          <div className="infos-cles-item">
-            <dt className="infos-cles-label">Année Distribution</dt>
-            <dd className="infos-cles-value">{vehicle.annee_distribution || "NC"}</dd>
-          </div>
-        </dl>
-        <div className="commentaire-essai">
-          <strong>📝 Commentaires Essai :</strong>
-          <p>{vehicle.commentaire_test || "Aucun commentaire disponible."}</p>
-        </div>
-      </section>
-
-      {/* Bloc Esthétique & Historique */}
-      <section className="infos-cles-container" aria-labelledby="esthetique-title">
-        <h3 id="esthetique-title" className="bloc-title">🎨 Esthétique & Historique d’entretien</h3>
-        <dl className="infos-cles-list">
-          <div className="infos-cles-item">
-            <dt className="infos-cles-label">État Carrosserie</dt>
-            <dd className="infos-cles-value">{vehicle.carrosserie || "NC"}</dd>
-          </div>
-          <div className="infos-cles-item">
-            <dt className="infos-cles-label">État Intérieur</dt>
-            <dd className="infos-cles-value">{vehicle.interieur || "NC"}</dd>
-          </div>
-        </dl>
-        <MaintenanceHistory entretien={vehicle.entretien} />
-      </section>
-
-      {/* Bloc Garantie & Équipements */}
-      <section className="infos-cles-container" aria-labelledby="garantie-title">
-        <h3 id="garantie-title" className="bloc-title">🎯 Équipements</h3>
-        <dl className="infos-cles-list equipements-list-responsive">
-          {vehicle.equipements?.length > 0 && vehicle.equipements.map((equipement, index) => (
-            <div className="infos-cles-item" key={index}>
-              <dt className="infos-cles-label">Équipement</dt>
-              <dd className="infos-cles-value">{equipement}</dd>
-            </div>
-          ))}
-        </dl>
-      </section>
-      {/* Garantie incluse */}
-      <GarantieInclusse annee={vehicle.annee} kilometrage={vehicle.kilometrage} />
+    <div className="vp-ligne">
+      <dt>{label}</dt>
+      <dd>{children}</dd>
     </div>
   );
 }
 
+function Fiche({ titre, icone: Icone, children }) {
+  return (
+    <section className="vp-carte">
+      <h2 className="vp-carte__titre">{Icone && <Icone size={20} aria-hidden="true" />}{titre}</h2>
+      {children}
+    </section>
+  );
+}
 
+export default function VehiclePage() {
+  const { id } = useParams();
+  const [v, setV] = useState(null);
+  const [photo, setPhoto] = useState(0);
+  const [onglet, setOnglet] = useState("pneus");
+
+  useEffect(() => {
+    let actif = true;
+    supabase
+      .from("mandats")
+      .select(`*, agents:agent_id (prenom, nom, telephone, photo_url, secteur, email)`)
+      .eq("id", id)
+      .single()
+      .then(({ data }) => actif && setV(data));
+    return () => { actif = false; };
+  }, [id]);
+
+  usePageMeta(
+    v ? `${v.marque} ${v.modele}` : "Véhicule",
+    v ? `${v.marque} ${v.modele} ${v.annee ?? ""} en vente avec CarActif : état détaillé, garantie 3 mois incluse, paiement sécurisé par séquestre.` : undefined
+  );
+
+  const photos = useMemo(() => (Array.isArray(v?.photo_url) ? v.photo_url.filter(Boolean) : []), [v]);
+
+  if (!v) return <p className="vp-chargement">Chargement...</p>;
+
+  const annee = getAnneeYear(v.annee);
+  const boite = getBoiteVitesseFromVehicle(v);
+  const energie = v.energie || v.carburant;
+  const titre = `${v.marque ?? ""} ${v.modele ?? ""}`.trim();
+  const sousTitre = [v.version, v.finition, v.motorisation].filter(Boolean).join(" · ");
+  const agent = v.agents;
+  const tel = agent?.telephone ? String(agent.telephone).replace(/\s/g, "") : null;
+  const lieu = [v.ville, v.departement && `(${v.departement})`].filter(Boolean).join(" ");
+  const suivant = (d) => setPhoto((p) => (p + d + photos.length) % photos.length);
+
+  const pneus = [
+    ["Avant gauche", v.pneu_av_g, v.pneu_av_g_int],
+    ["Avant droit", v.pneu_av_d, v.pneu_av_d_int],
+    ["Arrière gauche", v.pneu_ar_g, v.pneu_ar_g_int],
+    ["Arrière droit", v.pneu_ar_d, v.pneu_ar_d_int],
+  ];
+
+  const onglets = [
+    { id: "pneus", label: "Pneumatiques", icone: CircleDot },
+    { id: "freinage", label: "Freinage", icone: Disc3 },
+    { id: "distribution", label: "Distribution", icone: Link2 },
+    { id: "moteur", label: "Moteur", icone: Cog },
+    { id: "carrosserie", label: "Carrosserie", icone: Car },
+    { id: "essai", label: "Test de conduite", icone: Wrench },
+  ];
+
+  return (
+    <div className="vp">
+      <div className="vp-conteneur">
+        <Link to="/vehicules" className="vp-retour"><ArrowLeft size={18} aria-hidden="true" />Tous les véhicules</Link>
+
+        {/* Bandeau photo */}
+        <header className="vp-hero">
+          <div className="vp-hero__photo">
+            {photos.length > 0 ? (
+              <img src={photos[photo]} alt={`${titre}, photo ${photo + 1}`} />
+            ) : (
+              <div className="vp-hero__vide">Photos à venir</div>
+            )}
+            {v.statut === "Sous offre" && <span className="vp-statut">Sous offre</span>}
+            {photos.length > 1 && (
+              <>
+                <button type="button" className="vp-fleche vp-fleche--g" onClick={() => suivant(-1)} aria-label="Photo précédente"><ChevronLeft /></button>
+                <button type="button" className="vp-fleche vp-fleche--d" onClick={() => suivant(1)} aria-label="Photo suivante"><ChevronRight /></button>
+                <span className="vp-compteur">{photo + 1} / {photos.length}</span>
+              </>
+            )}
+            <div className="vp-hero__degrade" />
+            <div className="vp-hero__texte">
+              <div>
+                <h1>{titre}</h1>
+                {sousTitre && <p>{sousTitre}</p>}
+                <ul className="vp-pastilles">
+                  {annee && <li><Calendar size={16} aria-hidden="true" />{annee}</li>}
+                  {v.kilometrage && <li><Gauge size={16} aria-hidden="true" />{fmtKm(v.kilometrage)}</li>}
+                  {energie && <li><Fuel size={16} aria-hidden="true" />{energie}</li>}
+                  {boite && <li><Settings2 size={16} aria-hidden="true" />{boite}</li>}
+                  {lieu && <li><MapPin size={16} aria-hidden="true" />{lieu}</li>}
+                </ul>
+              </div>
+              <div className="vp-hero__prix">{fmtPrix(v.prix_affiche)}</div>
+            </div>
+          </div>
+          {photos.length > 1 && (
+            <div className="vp-vignettes" role="list">
+              {photos.map((u, i) => (
+                <button key={u + i} type="button" role="listitem" className={i === photo ? "is-active" : ""} onClick={() => setPhoto(i)} aria-label={`Afficher la photo ${i + 1}`}>
+                  <img src={u} alt="" loading="lazy" />
+                </button>
+              ))}
+            </div>
+          )}
+        </header>
+
+        <div className="vp-grille">
+          <main className="vp-principal">
+            <Fiche titre="Caractéristiques" icone={ClipboardList}>
+              <dl className="vp-lignes">
+                <Ligne label="Mise en circulation">{annee}</Ligne>
+                <Ligne label="Kilométrage">{fmtKm(v.kilometrage)}</Ligne>
+                <Ligne label="Énergie">{energie}</Ligne>
+                <Ligne label="Boîte de vitesses">{boite}</Ligne>
+                <Ligne label="Motorisation">{v.motorisation}</Ligne>
+                <Ligne label="Puissance DIN">{v.puissance_din ? `${v.puissance_din} ch` : null}</Ligne>
+                <Ligne label="Puissance fiscale">{v.puissance_fiscale ? `${v.puissance_fiscale} CV` : null}</Ligne>
+                <Ligne label="Finition">{v.finition}</Ligne>
+                <Ligne label="Version">{v.version}</Ligne>
+                <Ligne label="Portes">{v.nb_portes}</Ligne>
+                <Ligne label="Places">{v.nb_places}</Ligne>
+                <Ligne label="Couleur extérieure">{v.couleur}</Ligne>
+                <Ligne label="Couleur intérieure">{v.couleur_interieure}</Ligne>
+                <Ligne label="Crit'Air">{v.critair && <span className="vp-critair" data-critair={v.critair}>{v.critair}</span>}</Ligne>
+                <Ligne label="Localisation">{lieu}</Ligne>
+              </dl>
+              {v.infos_url && <a className="vp-lien" href={v.infos_url} target="_blank" rel="noopener noreferrer">Voir toutes les informations</a>}
+            </Fiche>
+
+            <Fiche titre="Contrôle mécanique" icone={Wrench}>
+              <div className="vp-controle">
+                <div className="vp-onglets" role="tablist" aria-label="Rubriques du contrôle">
+                  {onglets.map(({ id: oid, label, icone: I }) => (
+                    <button key={oid} type="button" role="tab" aria-selected={onglet === oid} className={onglet === oid ? "is-active" : ""} onClick={() => setOnglet(oid)}>
+                      <I size={20} aria-hidden="true" />{label}
+                    </button>
+                  ))}
+                </div>
+                <div className="vp-panneau" role="tabpanel">
+                  {onglet === "pneus" && (
+                    <div className="vp-pneus">
+                      <PneusSchema
+                        avG={{ ext: v.pneu_av_g, int: v.pneu_av_g_int }}
+                        avD={{ ext: v.pneu_av_d, int: v.pneu_av_d_int }}
+                        arG={{ ext: v.pneu_ar_g, int: v.pneu_ar_g_int }}
+                        arD={{ ext: v.pneu_ar_d, int: v.pneu_ar_d_int }}
+                      />
+                      <table className="vp-tableau">
+                        <thead><tr><th>Pneu</th><th>Ext.</th><th>Int.</th><th>État</th></tr></thead>
+                        <tbody>
+                          {pneus.map(([nom, e, i]) => {
+                            const pire = Math.max(versNombre(e) ?? -1, versNombre(i) ?? -1);
+                            return (
+                              <tr key={nom}>
+                                <td>{nom}</td>
+                                <td>{versNombre(e) === null ? "NC" : `${versNombre(e)} %`}</td>
+                                <td>{versNombre(i) === null ? "NC" : `${versNombre(i)} %`}</td>
+                                <td><span className="vp-point" style={{ background: couleurContinue(pire < 0 ? null : pire) }} />{etatUsure(pire < 0 ? null : pire)}</td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                  {onglet === "freinage" && (
+                    <dl className="vp-lignes vp-lignes--une">
+                      <Ligne label="Plaquettes avant">{v.plaquettes_av || "NC"}</Ligne>
+                      <Ligne label="Plaquettes arrière">{v.plaquettes_ar || "NC"}</Ligne>
+                    </dl>
+                  )}
+                  {onglet === "distribution" && (
+                    <dl className="vp-lignes vp-lignes--une">
+                      <Ligne label="Type de distribution">{v.type_distribution || "NC"}</Ligne>
+                      <Ligne label="Dernière distribution">{v.annee_distribution || "NC"}</Ligne>
+                    </dl>
+                  )}
+                  {onglet === "moteur" && (
+                    <dl className="vp-lignes vp-lignes--une">
+                      <Ligne label="État de l'huile">{v.huile_moteur || "NC"}</Ligne>
+                      <Ligne label="Fuite d'huile">{v.fuite_huile || "NC"}</Ligne>
+                      <Ligne label="État de l'embrayage">{v.embrayage || "NC"}</Ligne>
+                    </dl>
+                  )}
+                  {onglet === "carrosserie" && (
+                    <dl className="vp-lignes vp-lignes--une">
+                      <Ligne label="État carrosserie">{v.carrosserie || "NC"}</Ligne>
+                      <Ligne label="État intérieur">{v.interieur || "NC"}</Ligne>
+                    </dl>
+                  )}
+                  {onglet === "essai" && (
+                    <div>
+                      <dl className="vp-lignes vp-lignes--une">
+                        <Ligne label="Vibrations observées">{v.vibrations || "NC"}</Ligne>
+                      </dl>
+                      <p className="vp-commentaire">{v.commentaire_test || "Aucun commentaire de l'agent pour le moment."}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </Fiche>
+
+            <Fiche titre="Historique d'entretien" icone={Wrench}>
+              <MaintenanceHistory entretien={v.entretien} />
+            </Fiche>
+
+            {v.equipements?.length > 0 && (
+              <Fiche titre="Équipements" icone={Armchair}>
+                <ul className="vp-puces">{v.equipements.map((e, i) => <li key={i}>{e}</li>)}</ul>
+              </Fiche>
+            )}
+
+            <GarantieInclusse annee={v.annee} kilometrage={v.kilometrage} />
+          </main>
+
+          <aside className="vp-lateral">
+            <div className="vp-achat">
+              <p className="vp-achat__label">Prix TTC</p>
+              <p className="vp-achat__prix">{fmtPrix(v.prix_affiche)}</p>
+              {tel ? (
+                <a className="vp-bouton vp-bouton--plein" href={`tel:${tel}`}><Phone size={18} aria-hidden="true" />Appeler {agent?.prenom || "mon agent"}</a>
+              ) : null}
+              <Link className="vp-bouton vp-bouton--contour" to="/contact">Planifier une visite</Link>
+              <ul className="vp-garanties">
+                <li><ShieldCheck size={18} aria-hidden="true" />Garantie 3 mois incluse</li>
+                <li><Lock size={18} aria-hidden="true" />Paiement sécurisé par séquestre</li>
+                <li><BadgeCheck size={18} aria-hidden="true" />Véhicule contrôlé par un agent</li>
+              </ul>
+            </div>
+            {agent && (
+              <Link to={`/agent/${v.agent_id}`} className="vp-agent">
+                {agent.photo_url ? <img src={agent.photo_url} alt="" /> : <span className="vp-agent__init">{(agent.prenom || "?")[0]}</span>}
+                <span><strong>{agent.prenom} {agent.nom}</strong><small>{agent.secteur ? `Secteur : ${agent.secteur}` : "Agent CarActif"}</small></span>
+              </Link>
+            )}
+          </aside>
+        </div>
+      </div>
+
+      {tel && (
+        <a className="vp-appel-mobile" href={`tel:${tel}`}><Phone size={18} aria-hidden="true" />Appeler {agent?.prenom || "mon agent"} · {fmtPrix(v.prix_affiche)}</a>
+      )}
+    </div>
+  );
+}
