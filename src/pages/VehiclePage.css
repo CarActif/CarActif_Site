@@ -5,30 +5,41 @@
 .vp-retour { display: inline-flex; align-items: center; gap: 6px; color: #0b2545; font-weight: 600; text-decoration: none; margin: 4px 0 12px; }
 .vp-retour:hover { text-decoration: underline; }
 
-/* Bandeau */
-.vp-hero { background: #0b2545; border-radius: 18px; overflow: hidden; box-shadow: 0 6px 24px rgba(11,37,69,.18); }
-.vp-hero__photo { position: relative; aspect-ratio: 16 / 7.2; background: #12335f; }
+/* Bandeau plein écran, sans bord */
+.vp { padding-top: 0; }
+.vp-hero { background: #0b1a2e; border-radius: 0; box-shadow: none; width: 100%; }
+.vp-hero__photo { position: relative; height: min(78vh, 760px); min-height: 440px; background: #12335f; overflow: hidden; }
 .vp-hero__photo > img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .vp-hero__vide { height: 100%; display: grid; place-items: center; color: #cbd5e1; font-weight: 600; }
-.vp-hero__degrade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(11,37,69,0) 40%, rgba(11,37,69,.88) 100%); pointer-events: none; }
-.vp-hero__texte { position: absolute; left: 0; right: 0; bottom: 0; padding: 22px 26px; display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; color: #fff; }
-.vp-hero__texte h1 { margin: 0; font-size: clamp(1.5rem, 3.6vw, 2.6rem); font-weight: 800; line-height: 1.1; color: #fff; text-shadow: none; }
-.vp-hero__texte p { margin: 4px 0 10px; color: #dbe5f3; font-size: 1rem; }
+.vp-hero__degrade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(5,14,28,.55) 0%, rgba(5,14,28,0) 22%, rgba(5,14,28,0) 45%, rgba(5,14,28,.92) 100%); pointer-events: none; }
+.vp-hero__haut { position: absolute; top: 0; left: 0; right: 0; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; gap: 10px; z-index: 3; }
+.vp-hero__haut-droite { display: flex; gap: 8px; }
+.vp-chip { display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 0 16px; border: 0; border-radius: 10px; background: rgba(11,26,46,.78); color: #fff; font: inherit; font-weight: 600; cursor: pointer; text-decoration: none; backdrop-filter: blur(6px); }
+.vp-chip:hover { background: #1d4ed8; }
+.vp-chip--carre { width: 42px; padding: 0; justify-content: center; }
+.vp-hero__texte { position: absolute; left: 0; right: 0; bottom: 0; padding: 0 clamp(18px, 5vw, 72px) 30px; display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; color: #fff; z-index: 2; }
+.vp-hero__texte h1 { margin: 0; font-size: clamp(1.9rem, 5vw, 4rem); font-weight: 800; line-height: 1.02; color: #fff; text-shadow: 0 2px 12px rgba(0,0,0,.35); text-transform: uppercase; letter-spacing: -.01em; }
+.vp-hero__texte p { margin: 6px 0 14px; color: #e2e8f0; font-size: 1.05rem; }
 .vp-pastilles { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
-.vp-pastilles li { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 999px; background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.35); font-weight: 600; font-size: .9rem; backdrop-filter: blur(4px); }
-.vp-hero__prix { font-size: clamp(1.6rem, 3.6vw, 2.8rem); font-weight: 800; white-space: nowrap; }
-.vp-statut { position: absolute; top: 14px; left: 14px; background: #f59e0b; color: #1f1300; font-weight: 800; padding: 6px 14px; border-radius: 999px; z-index: 2; }
-.vp-fleche { position: absolute; top: 40%; z-index: 2; width: 42px; height: 42px; border-radius: 50%; border: 0; background: rgba(11,37,69,.7); color: #fff; display: grid; place-items: center; cursor: pointer; }
+.vp-pastilles li { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 999px; background: rgba(11,26,46,.55); border: 1px solid rgba(255,255,255,.55); font-weight: 600; font-size: .92rem; backdrop-filter: blur(6px); }
+.vp-hero__prix { font-size: clamp(2rem, 5vw, 4rem); font-weight: 800; white-space: nowrap; color: #fff; text-shadow: 0 2px 12px rgba(0,0,0,.4); }
+.vp-statut { position: absolute; top: 72px; left: 20px; background: #f59e0b; color: #1f1300; font-weight: 800; padding: 6px 14px; border-radius: 999px; z-index: 2; }
+.vp-fleche { position: absolute; top: 46%; z-index: 3; width: 48px; height: 48px; border-radius: 50%; border: 0; background: rgba(11,26,46,.7); color: #fff; display: grid; place-items: center; cursor: pointer; }
 .vp-fleche:hover { background: #1d4ed8; }
-.vp-fleche--g { left: 12px; } .vp-fleche--d { right: 12px; }
-.vp-compteur { position: absolute; top: 14px; right: 14px; z-index: 2; background: rgba(11,37,69,.75); color: #fff; font-size: .8rem; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
-.vp-vignettes { display: flex; gap: 8px; padding: 10px; overflow-x: auto; background: #0b2545; scrollbar-width: thin; }
-.vp-vignettes button { flex: none; width: 104px; height: 70px; padding: 0; border: 2px solid transparent; border-radius: 8px; overflow: hidden; background: #12335f; cursor: pointer; opacity: .75; }
+.vp-fleche--g { left: 20px; } .vp-fleche--d { right: 20px; }
+.vp-vignettes { display: flex; gap: 8px; padding: 12px clamp(12px, 3vw, 40px); overflow-x: auto; background: #0b1a2e; scrollbar-width: thin; justify-content: center; }
+.vp-vignettes button { flex: none; width: 112px; height: 76px; padding: 0; border: 2px solid transparent; border-radius: 8px; overflow: hidden; background: #12335f; cursor: pointer; opacity: .7; }
+.vp-vignettes button:hover { opacity: 1; }
 .vp-vignettes button.is-active { border-color: #fff; opacity: 1; }
 .vp-vignettes img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.vp-galerie { position: fixed; inset: 0; z-index: 100; background: #050e1c; overflow-y: auto; padding: 72px clamp(12px, 3vw, 40px) 24px; }
+.vp-galerie__fermer { position: fixed; top: 16px; right: 20px; z-index: 101; }
+.vp-galerie__grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; max-width: 1400px; margin: 0 auto; }
+.vp-galerie__grille button { padding: 0; border: 0; border-radius: 10px; overflow: hidden; cursor: pointer; background: #12335f; aspect-ratio: 4 / 3; }
+.vp-galerie__grille img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 /* Grille */
-.vp-grille { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 16px; margin-top: 16px; align-items: start; }
+.vp-grille { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 16px; margin-top: 20px; align-items: start; }
 .vp-principal { display: grid; gap: 14px; min-width: 0; }
 .vp-carte, .vp .garantie-incluse { background: #fff; border: 1px solid var(--border, #d3d9e3); border-radius: 14px; padding: 18px 20px; box-shadow: 0 1px 3px rgba(11,26,46,.06); margin: 0; max-width: none; }
 .vp-carte__titre { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; font-size: 1.15rem; font-weight: 800; color: #0b2545; }
@@ -83,9 +94,11 @@
 @media (max-width: 900px) {
   .vp-grille { grid-template-columns: 1fr; }
   .vp-lateral { position: static; order: -1; }
-  .vp-hero__photo { aspect-ratio: 4 / 3; }
-  .vp-hero__degrade { display: none; }
-  .vp-hero__texte { position: static; flex-direction: column; align-items: flex-start; padding: 14px 16px 6px; background: #0b2545; }
+  .vp-hero__photo { height: 64vh; min-height: 380px; }
+  .vp-hero__texte { flex-direction: column; align-items: flex-start; padding: 0 16px 18px; gap: 8px; }
+  .vp-hero__prix { font-size: 2rem; }
+  .vp-fleche { width: 40px; height: 40px; }
+  .vp-vignettes { justify-content: flex-start; }
   .vp-achat__label, .vp-achat__prix, .vp-bouton--plein { display: none; }
   .vp-lateral { order: 0; }
   .vp-controle { grid-template-columns: 1fr; }
@@ -95,3 +108,5 @@
   .vp-pneus { grid-template-columns: 1fr; }
   .vp-appel-mobile { display: flex; align-items: center; justify-content: center; gap: 8px; position: fixed; left: 12px; right: 12px; bottom: 12px; z-index: 40; min-height: 50px; border-radius: 12px; background: #0b2545; color: #fff; font-weight: 700; text-decoration: none; box-shadow: 0 6px 20px rgba(11,37,69,.35); }
 }
+
+@media (max-width: 600px) { .vp-chip__txt { display: none; } .vp-chip { padding: 0 12px; white-space: nowrap; } }

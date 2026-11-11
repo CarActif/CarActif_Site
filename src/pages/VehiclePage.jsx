@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
-  ArrowLeft, Calendar, Gauge, Fuel, Settings2, MapPin, Phone, ChevronLeft, ChevronRight,
+  ArrowLeft, X, Images, Calendar, Gauge, Fuel, Settings2, MapPin, Phone, ChevronLeft, ChevronRight,
   ShieldCheck, Lock, BadgeCheck, CircleDot, Disc3, Link2, Cog, Wrench, Car, Armchair, ClipboardList,
 } from "lucide-react";
 import supabase from "../supabase";
@@ -37,6 +37,8 @@ function Fiche({ titre, icone: Icone, children }) {
 
 export default function VehiclePage() {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const [galerie, setGalerie] = useState(false);
   const [v, setV] = useState(null);
   const [photo, setPhoto] = useState(0);
   const [onglet, setOnglet] = useState("pneus");
@@ -89,52 +91,66 @@ export default function VehiclePage() {
 
   return (
     <div className="vp">
-      <div className="vp-conteneur">
-        <Link to="/vehicules" className="vp-retour"><ArrowLeft size={18} aria-hidden="true" />Tous les véhicules</Link>
-
-        {/* Bandeau photo */}
-        <header className="vp-hero">
-          <div className="vp-hero__photo">
-            {photos.length > 0 ? (
-              <img src={photos[photo]} alt={`${titre}, photo ${photo + 1}`} />
-            ) : (
-              <div className="vp-hero__vide">Photos à venir</div>
-            )}
-            {v.statut === "Sous offre" && <span className="vp-statut">Sous offre</span>}
-            {photos.length > 1 && (
-              <>
-                <button type="button" className="vp-fleche vp-fleche--g" onClick={() => suivant(-1)} aria-label="Photo précédente"><ChevronLeft /></button>
-                <button type="button" className="vp-fleche vp-fleche--d" onClick={() => suivant(1)} aria-label="Photo suivante"><ChevronRight /></button>
-                <span className="vp-compteur">{photo + 1} / {photos.length}</span>
-              </>
-            )}
-            <div className="vp-hero__degrade" />
-            <div className="vp-hero__texte">
-              <div>
-                <h1>{titre}</h1>
-                {sousTitre && <p>{sousTitre}</p>}
-                <ul className="vp-pastilles">
-                  {annee && <li><Calendar size={16} aria-hidden="true" />{annee}</li>}
-                  {v.kilometrage && <li><Gauge size={16} aria-hidden="true" />{fmtKm(v.kilometrage)}</li>}
-                  {energie && <li><Fuel size={16} aria-hidden="true" />{energie}</li>}
-                  {boite && <li><Settings2 size={16} aria-hidden="true" />{boite}</li>}
-                  {lieu && <li><MapPin size={16} aria-hidden="true" />{lieu}</li>}
-                </ul>
-              </div>
-              <div className="vp-hero__prix">{fmtPrix(v.prix_affiche)}</div>
+      <header className="vp-hero">
+        <div className="vp-hero__photo">
+          {photos.length > 0 ? (
+            <img src={photos[photo]} alt={`${titre}, photo ${photo + 1}`} />
+          ) : (
+            <div className="vp-hero__vide">Photos à venir</div>
+          )}
+          <div className="vp-hero__degrade" />
+          <div className="vp-hero__haut">
+            <button type="button" className="vp-chip" onClick={() => (window.history.length > 1 ? navigate(-1) : navigate("/vehicules"))}><ArrowLeft size={18} aria-hidden="true" />Retour</button>
+            <div className="vp-hero__haut-droite">
+              {photos.length > 1 && <button type="button" className="vp-chip" onClick={() => setGalerie(true)}><Images size={18} aria-hidden="true" /><span className="vp-chip__txt">Toutes les photos&nbsp;</span>({photos.length})</button>}
+              <Link to="/" className="vp-chip vp-chip--carre" aria-label="Accueil CarActif"><X size={18} aria-hidden="true" /></Link>
             </div>
           </div>
+          {v.statut === "Sous offre" && <span className="vp-statut">Sous offre</span>}
           {photos.length > 1 && (
-            <div className="vp-vignettes" role="list">
-              {photos.map((u, i) => (
-                <button key={u + i} type="button" role="listitem" className={i === photo ? "is-active" : ""} onClick={() => setPhoto(i)} aria-label={`Afficher la photo ${i + 1}`}>
-                  <img src={u} alt="" loading="lazy" />
-                </button>
-              ))}
-            </div>
+            <>
+              <button type="button" className="vp-fleche vp-fleche--g" onClick={() => suivant(-1)} aria-label="Photo précédente"><ChevronLeft /></button>
+              <button type="button" className="vp-fleche vp-fleche--d" onClick={() => suivant(1)} aria-label="Photo suivante"><ChevronRight /></button>
+            </>
           )}
-        </header>
+          <div className="vp-hero__texte">
+            <div>
+              <h1>{titre}</h1>
+              {sousTitre && <p>{sousTitre}</p>}
+              <ul className="vp-pastilles">
+                {annee && <li><Calendar size={16} aria-hidden="true" />{annee}</li>}
+                {v.kilometrage && <li><Gauge size={16} aria-hidden="true" />{fmtKm(v.kilometrage)}</li>}
+                {energie && <li><Fuel size={16} aria-hidden="true" />{energie}</li>}
+                {boite && <li><Settings2 size={16} aria-hidden="true" />{boite}</li>}
+                {lieu && <li><MapPin size={16} aria-hidden="true" />{lieu}</li>}
+              </ul>
+            </div>
+            <div className="vp-hero__prix">{fmtPrix(v.prix_affiche)}</div>
+          </div>
+        </div>
+        {photos.length > 1 && (
+          <div className="vp-vignettes" role="list">
+            {photos.map((u, i) => (
+              <button key={u + i} type="button" role="listitem" className={i === photo ? "is-active" : ""} onClick={() => setPhoto(i)} aria-label={`Afficher la photo ${i + 1}`}>
+                <img src={u} alt="" loading="lazy" />
+              </button>
+            ))}
+          </div>
+        )}
+      </header>
 
+      {galerie && (
+        <div className="vp-galerie" role="dialog" aria-modal="true" aria-label="Toutes les photos">
+          <button type="button" className="vp-chip vp-galerie__fermer" onClick={() => setGalerie(false)}><X size={18} aria-hidden="true" />Fermer</button>
+          <div className="vp-galerie__grille">
+            {photos.map((u, i) => (
+              <button key={u + i} type="button" onClick={() => { setPhoto(i); setGalerie(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}><img src={u} alt={`${titre}, photo ${i + 1}`} loading="lazy" /></button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div className="vp-conteneur">
         <div className="vp-grille">
           <main className="vp-principal">
             <Fiche titre="Caractéristiques" icone={ClipboardList}>

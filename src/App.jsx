@@ -150,14 +150,25 @@ function AppRoutes() {
   );
 }
 
+function Layout() {
+  const { pathname } = useLocation();
+  // Fiche véhicule : page immersive, sans barre de navigation
+  const immersive = /^\/(vehicules|vehicle)\/[^/]+$/.test(pathname);
+  return (
+    <>
+      {!immersive && <Navbar />}
+      <AppRoutes />
+      <Footer />
+    </>
+  );
+}
+
 function App() {
   return (
     <div className="liquid-bg min-h-screen">
       <div className="bg-orb-teal" aria-hidden="true" />
       <Router>
-        <Navbar />
-        <AppRoutes />
-        <Footer />
+        <Layout />
       </Router>
     </div>
   );
