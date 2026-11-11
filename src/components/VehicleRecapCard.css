@@ -38,15 +38,11 @@
   }
 }
  .vehicle-recap-card {
-  background: #fff;
-  border-radius: 1rem;
-  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.04);
   padding: 1rem 1rem;
   align-items: center;
   text-align: center;
   max-width: 900px;
   width: 100%;
-  border: none;
   color: #222;
   display: flex;
   flex-direction: column;
@@ -71,7 +67,6 @@
   align-items: center;
   justify-items: center;
 }
-}
 .pneus-center {
   grid-area: schema;
   display: flex;
@@ -92,6 +87,11 @@
   margin-top: -0.5rem;
 }
 .pneus-schema-img {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+}
+
 .pneus-corner {
   color: #111 !important;
   background: #fff;
@@ -184,12 +184,15 @@
     margin: 0.2rem 0;
   }
 }
+.vehicle-recap-infos-row{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
   gap: 0.7rem;
   font-size: 1.05rem;
   color: #222;
   margin: 0.5rem 0 0.7rem 0;
-  justify-content: center;
-  flex-wrap: wrap;
 }
 .vehicle-recap-infos-item {
   color: #222;
@@ -225,7 +228,7 @@
 }
 .vehicle-recap-price span {
   display: inline-block;
-  color: #22c55e;
+  color: #4f46e5;
   font-weight: 700;
   font-size: 2rem;
   padding: 0.1rem 0;
@@ -257,4 +260,40 @@
     max-height: 50px;
     padding: 0.5rem 0.3rem;
   }
+}
+
+/* ─── DARK THEME OVERRIDE (Business Plan) ─── */
+.vehicle-recap-card {
+  color: var(--text2, rgba(245, 245, 247, 0.7));
+}
+
+.pneus-corner {
+  color: var(--text, #f5f5f7) !important;
+  background: var(--surface2, rgba(255, 255, 255, 0.09));
+  box-shadow: none;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+}
+
+.pneus-corner span,
+.pneus-corner strong,
+.pneus-value {
+  color: var(--text, #f5f5f7) !important;
+}
+
+.vehicle-recap-header {
+  color: var(--text, #f5f5f7) !important;
+}
+
+.vehicle-recap-infos-row,
+.vehicle-recap-infos-item,
+.vehicle-recap-value {
+  color: var(--text2, rgba(245, 245, 247, 0.7));
+}
+
+.vehicle-recap-label {
+  color: var(--text3, rgba(245, 245, 247, 0.42));
+}
+
+.vehicle-recap-price span {
+  color: var(--blue, #007aff);
 }

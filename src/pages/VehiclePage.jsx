@@ -1,28 +1,27 @@
+import PneusSchema from "../components/PneusSchema";
+import GarantieInclusse from "../components/GarantieInclusse";
+import usePageMeta from "../lib/usePageMeta";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { createClient } from "@supabase/supabase-js";
+import { useEffect, useRef, useState } from "react";
+import supabase from "../supabase";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Thumbs } from "swiper/modules";
+import { Navigation } from "swiper/modules";
 import { Link } from "react-router-dom";
 
 import "swiper/css";
 import "swiper/css/navigation";
-import "swiper/css/thumbs";
 import "./VehiclePage.css";
 import "../styles/controle-technique-etat.css";
 import MaintenanceHistory from "../components/MaintenanceHistory";
 import VehicleRecapCard from "../components/VehicleRecapCard";
-
-const supabase = createClient(
-  "https://rhbnlcmsyqjbzykexttt.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJoYm5sY21zeXFqYnp5a2V4dHR0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA0NDA5OTcsImV4cCI6MjA2NjAxNjk5N30.o24Li47McJpMVaa2sEjwR8oOa1mobsUqhdUUD2VwpT8"
-);
+import { getAnneeYear } from "../utils/mandats";
 
 export default function VehiclePage() {
   const { id } = useParams();
   const [vehicle, setVehicle] = useState(null);
-  const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [showAllInfos, setShowAllInfos] = useState(false);
+  const [activePhotoIndex, setActivePhotoIndex] = useState(0);
+  const swiperRef = useRef(null);
 
   useEffect(() => {
     const fetchVehicle = async () => {
@@ -48,6 +47,11 @@ export default function VehiclePage() {
     fetchVehicle();
   }, [id]);
 
+  usePageMeta(
+    vehicle ? `${vehicle.marque} ${vehicle.modele}` : "Véhicule",
+    vehicle ? `${vehicle.marque} ${vehicle.modele} ${vehicle.annee ?? ""} en vente avec CarActif : état détaillé, garantie 3 mois incluse, paiement sécurisé par séquestre.` : undefined
+  );
+
   if (!vehicle)
     return (
       <p style={{ textAlign: "center", color: "#FFD700", fontSize: "1.5rem" }}>
@@ -57,54 +61,57 @@ export default function VehiclePage() {
 
   return (
     <div className="vehiclepage-wrapper">
-  <div className="photo-agent-wrapper" style={{ display: 'flex', gap: '2.5rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>
-        {/* Colonne gauche : photos */}
-        <div className="gallery-part" style={{ flex: '1 1 0', minWidth: '0' }}>
-          <div className="photo-container">
-            {vehicle.photo_url?.length > 0 ? (
-              <Swiper
-                modules={[Navigation, Thumbs]}
-                navigation
-                thumbs={{ swiper: thumbsSwiper }}
-                className="main-swiper-modern"
-                spaceBetween={10}
-                slidesPerView={1}
-              >
+      <div className="photo-agent-wrapper">
+        <section className="gallery-part glass-card vehicle-gallery-panel" aria-label="Galerie photos">
+          <h2 className="bloc-title vehicle-gallery-title">Galerie Photos</h2>
+
+          {vehicle.photo_url?.length > 0 ? (
+            <>
+              <div className="photo-container">
+                <Swiper
+                  modules={[Navigation]}
+                  navigation
+                  className="main-swiper-modern vehicle-gallery-swiper"
+                  spaceBetween={10}
+                  slidesPerView={1}
+                  onSwiper={(swiper) => {
+                    swiperRef.current = swiper;
+                  }}
+                  onSlideChange={(swiper) => setActivePhotoIndex(swiper.activeIndex)}
+                >
+                  {vehicle.photo_url.map((url, index) => (
+                    <SwiperSlide key={index}>
+                      <img
+                        src={url}
+                        alt={`Photo ${index + 1}`}
+                        className="photo-slide-img vehicle-gallery-main-img"
+                      />
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </div>
+
+              <div className="thumb-container vehicle-gallery-thumbs">
                 {vehicle.photo_url.map((url, index) => (
-                  <SwiperSlide key={index}>
-                    <img
-                      src={url}
-                      alt={`photo-${index}`}
-                      className="photo-slide-img"
-                    />
-                  </SwiperSlide>
+                  <button
+                    key={index}
+                    type="button"
+                    className={`vehicle-gallery-thumb${index === activePhotoIndex ? " is-active" : ""}`}
+                    aria-label={`Afficher la photo ${index + 1}`}
+                    onClick={() => {
+                      setActivePhotoIndex(index);
+                      swiperRef.current?.slideTo(index);
+                    }}
+                  >
+                    <img src={url} alt="" className="thumb-img-modern" />
+                  </button>
                 ))}
-              </Swiper>
-            ) : (
-              <p>Aucune photo disponible.</p>
-            )}
-          </div>
-          {vehicle.photo_url?.length > 0 && (
-            <div className="thumb-container">
-              <Swiper
-                onSwiper={setThumbsSwiper}
-                slidesPerView={5}
-                spaceBetween={10}
-                className="thumbs-swiper-modern"
-              >
-                {vehicle.photo_url.map((url, index) => (
-                  <SwiperSlide key={index}>
-                    <img
-                      src={url}
-                      alt={`thumb-${index}`}
-                      className="thumb-img-modern"
-                    />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            </div>
+              </div>
+            </>
+          ) : (
+            <p className="vehicle-gallery-empty">Aucune photo disponible.</p>
           )}
-        </div>
+        </section>
         {/* Colonne droite : agent + recap card */}
   <div className="side-cards-wrapper">
           <Link
@@ -146,7 +153,7 @@ export default function VehiclePage() {
           <VehicleRecapCard
             marque={vehicle.marque}
             modele={vehicle.modele}
-            annee={vehicle.annee ? new Date(vehicle.annee).getFullYear() : ''}
+            annee={getAnneeYear(vehicle.annee) || ''}
             carburant={vehicle.energie}
             prix={vehicle.prix_affiche ? vehicle.prix_affiche.toLocaleString("fr-FR") : 'Prix sur demande'}
             finition={vehicle.finition}
@@ -181,7 +188,7 @@ export default function VehiclePage() {
           {vehicle.annee && (
             <div className="infos-cles-item">
               <dt className="infos-cles-label">Année</dt>
-              <dd className="infos-cles-value" title={new Date(vehicle.annee).getFullYear()}>{new Date(vehicle.annee).getFullYear()}</dd>
+              <dd className="infos-cles-value" title={getAnneeYear(vehicle.annee)}>{getAnneeYear(vehicle.annee)}</dd>
             </div>
           )}
           {/* Kilométrage */}
@@ -288,29 +295,13 @@ export default function VehiclePage() {
 
         <section className="infos-cles-container" aria-labelledby="controle-technique-title">
           <h3 id="controle-technique-title" className="bloc-title">🛠️ Contrôle Technique & État</h3>
+          <PneusSchema
+            avG={vehicle?.pneu_av_g}
+            avD={vehicle?.pneu_av_d}
+            arG={vehicle?.pneu_ar_g}
+            arD={vehicle?.pneu_ar_d}
+          />
           <dl className="infos-cles-list">
-            {/* Pneus */}
-            {[
-              { label: "Usure Pneu AV G", value: vehicle?.pneu_av_g },
-              { label: "Usure Pneu AV D", value: vehicle?.pneu_av_d },
-              { label: "Usure Pneu AR G", value: vehicle?.pneu_ar_g },
-              { label: "Usure Pneu AR D", value: vehicle?.pneu_ar_d }
-            ].map((pneu) => {
-              let color = '#111';
-              if (typeof pneu.value === 'number') {
-                if (pneu.value < 31) color = '#16A34A';
-                else if (pneu.value <= 71) color = '#F97316';
-                else color = '#DC2626';
-              }
-              return (
-                <div className="infos-cles-item" key={pneu.label}>
-                  <dt className="infos-cles-label">{pneu.label}</dt>
-                  <dd className="infos-cles-value" style={{ color }}>{
-                    typeof pneu.value === 'number' ? `${pneu.value} %` : (pneu.value || 'NC')
-                  }</dd>
-                </div>
-              );
-            })}
             {/* Plaquettes */}
             {[
               { label: "Plaquettes Avant", value: vehicle?.plaquettes_av },
@@ -387,64 +378,8 @@ export default function VehiclePage() {
           ))}
         </dl>
       </section>
-      {/* Card Garantie séparée */}
-      <section className="infos-cles-container" aria-labelledby="garantie-card-title" style={{marginTop: '2.5rem', padding: '2rem 1rem', background: '#fff', borderRadius: '1rem', boxShadow: '0 2px 12px 0 rgba(0,0,0,0.04)', maxWidth: '900px', marginLeft: 'auto', marginRight: 'auto', color: '#222'}}>
-        <h2 style={{fontSize: '2rem', fontWeight: 700, marginBottom: '1.5rem'}}>Garantie & Tarifs</h2>
-  <div style={{display: 'flex', flexDirection: 'column', gap: '2rem', marginBottom: '2rem'}}>
-          {/* Card Thermique/Hybride/E85 */}
-          <div style={{background:'#f8f8f8', borderRadius:'0.75rem', padding:'1.5rem', boxShadow:'0 1px 6px 0 rgba(0,0,0,0.03)'}}>
-            <h3 style={{fontSize:'1.15rem', fontWeight:600, marginBottom:'0.5rem'}}>Thermique / Hybride / E85</h3>
-            <div style={{marginBottom:'0.5rem', fontWeight:500}}>Pièces couvertes :</div>
-            <div style={{marginBottom:'0.5rem', color:'#059669', fontWeight:600}}>
-              <span style={{fontWeight:700}}>Prestige Total : jusqu’à 77 pièces couvertes, l’expérience sans concession.*</span><br/>
-              <span style={{fontStyle:'italic', fontWeight:400, fontSize:'0.7em', color:'#666'}}>Couverture et tarif indicatifs : la liste exacte et le prix varient selon le véhicule (année, kilométrage, motorisation, historique) et le plafond choisi.*</span>
-            </div>
-            <ul style={{columns:2, fontSize:'1rem', marginBottom:'1rem', gap:'0.5rem', listStyle:'none', paddingLeft:0}}>
-              <li>✅ <span style={{fontWeight:700, fontStyle:'italic'}}>Moteur</span></li>
-              <li>✅ <span style={{fontWeight:700, fontStyle:'italic'}}>Boîte de vitesse</span></li>
-              <li>✅ <span style={{fontWeight:700, fontStyle:'italic'}}>Circuit de refroidissement</span></li>
-              <li>✅ <span style={{fontWeight:700, fontStyle:'italic'}}>Freins</span></li>
-              <li>✅ <span style={{fontWeight:700, fontStyle:'italic'}}>Direction</span></li>
-              <li>✅ <span style={{fontWeight:700, fontStyle:'italic'}}>Arbres de transmission</span></li>
-              <li>✅ <span style={{fontWeight:700, fontStyle:'italic'}}>Pompe d’injection & injecteurs</span></li>
-              <li>✅ <span style={{fontWeight:700, fontStyle:'italic'}}>Turbo</span></li>
-              <li>✅ <span style={{fontWeight:700, fontStyle:'italic'}}>Boîtiers électroniques (gestion moteur/boîte)</span></li>
-              <li>✅ <span style={{fontWeight:700, fontStyle:'italic'}}>Alternateur</span></li>
-              <li>✅ <span style={{fontWeight:700, fontStyle:'italic'}}>Démarreur</span></li>
-              <li>✅ <span style={{fontWeight:700, fontStyle:'italic'}}>Capteurs de gestion moteur/boîte</span></li>
-              <li>✅ <span style={{fontWeight:700, fontStyle:'italic'}}>...et bien plus</span></li>
-            </ul>
-            <div style={{marginBottom:'1rem', lineHeight:'1.7'}}>
-              <div><span style={{fontStyle:'italic'}}>3 mois</span> — <span style={{color:'#059669', fontWeight:600}}>INCLUS</span></div>
-              <div><span style={{fontStyle:'italic'}}>6 mois</span> — <strong>10 000 km</strong> : <span style={{color:'#2563eb', fontWeight:600}}>379 € TTC*</span></div>
-              <div><span style={{fontStyle:'italic'}}>12 mois</span> — <strong>20 000 km</strong> : <span style={{color:'#2563eb', fontWeight:600}}>449 € TTC*</span></div>
-              <div><span style={{fontStyle:'italic'}}>Mensualité 12 mois</span> : <span style={{color:'#2563eb', fontWeight:600}}>49,99 €/mois TTC*</span></div>
-            </div>
-            <a href="/garantie" style={{color:'#2563eb', fontWeight:600, textDecoration:'underline'}}>En savoir +</a>
-          </div>
-          {/* Card Electrique */}
-          <div style={{background:'#f8f8f8', borderRadius:'0.75rem', padding:'1.5rem', boxShadow:'0 1px 6px 0 rgba(0,0,0,0.03)'}}>
-            <h3 style={{fontSize:'1.15rem', fontWeight:600, marginBottom:'0.5rem'}}>Électrique</h3>
-            <div style={{marginBottom:'0.5rem', fontWeight:500}}>Pièces couvertes :</div>
-            <ul style={{columns:2, fontSize:'1rem', marginBottom:'1rem', gap:'0.5rem', listStyle:'none', paddingLeft:0}}>
-              <li>✅ <span style={{fontWeight:700, fontStyle:'italic'}}>Moteur, Réducteur</span></li>
-              <li>✅ <span style={{fontWeight:700, fontStyle:'italic'}}>Calculateurs (batterie, commutateur, moteur)</span></li>
-              <li>✅ <span style={{fontWeight:700, fontStyle:'italic'}}>Alimentation (régulateur, onduleur, câbles)</span></li>
-              <li>✅ <span style={{fontWeight:700, fontStyle:'italic'}}>Freins</span></li>
-              <li>✅ <span style={{fontWeight:700, fontStyle:'italic'}}>Direction</span></li>
-              <li>✅ <span style={{fontWeight:700, fontStyle:'italic'}}>Climatisation (hors recharge gaz)</span></li>
-              <li>✅ <span style={{fontWeight:700, fontStyle:'italic'}}>Accessoires électriques/électroniques</span></li>
-            </ul>
-            <div style={{marginBottom:'1rem', lineHeight:'1.7'}}>
-              <div><span style={{fontStyle:'italic'}}>3 mois</span> — <span style={{color:'#059669', fontWeight:600}}>INCLUS</span></div>
-              <div><span style={{fontStyle:'italic'}}>6 mois</span> — <strong>6 000 km</strong> : <span style={{color:'#2563eb', fontWeight:600}}>322 € TTC*</span></div>
-              <div><span style={{fontStyle:'italic'}}>12 mois</span> — <strong>12 000 km</strong> : <span style={{color:'#2563eb', fontWeight:600}}>382 € TTC*</span></div>
-              <div><span style={{fontStyle:'italic'}}>Mensualité 12 mois</span> : <span style={{color:'#2563eb', fontWeight:600}}>42,49 €/mois TTC*</span></div>
-            </div>
-            <a href="/garantie" style={{color:'#2563eb', fontWeight:600, textDecoration:'underline'}}>En savoir +</a>
-          </div>
-        </div>
-      </section>
+      {/* Garantie incluse */}
+      <GarantieInclusse annee={vehicle.annee} kilometrage={vehicle.kilometrage} />
     </div>
   );
 }

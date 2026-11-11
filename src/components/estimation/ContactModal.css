@@ -1,0 +1,75 @@
+.bp-modal-overlay {
+  /* Portée hors de .bp-page (rendu via createPortal dans document.body pour échapper
+     au filter/transform de PageTransition, qui casserait position:fixed) : on
+     redéfinit ici les variables du thème sombre du business plan. */
+  --blue: #007aff;
+  --purple: #8e54e9;
+  --teal: #00c6a2;
+  --dark2: #232330;
+  --surface: rgba(255, 255, 255, 0.09);
+  --surface2: rgba(255, 255, 255, 0.14);
+  --border: rgba(255, 255, 255, 0.16);
+  --border2: rgba(255, 255, 255, 0.26);
+  --bp-text: #f5f5f7;
+  --bp-text2: rgba(245, 245, 247, 0.7);
+  --bp-text3: rgba(245, 245, 247, 0.42);
+  --green: #30d158;
+  --orange: #ff9f0a;
+  --red: #ff453a;
+
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 5, 8, 0.7);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 100;
+}
+
+.bp-modal {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 2rem;
+  border-radius: 24px;
+  background: var(--dark2, #232330);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+  color: var(--bp-text, #f5f5f7);
+  font-family: "Inter", -apple-system, "SF Pro Display", sans-serif;
+}
+
+.bp-modal-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--bp-text, #f5f5f7);
+  margin-bottom: 0.5rem;
+}
+
+.bp-modal-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--bp-text3, rgba(245, 245, 247, 0.42));
+  cursor: pointer;
+}
+
+.bp-field-error {
+  display: block;
+  color: var(--red, #ff453a);
+  font-size: 0.78rem;
+  margin-top: 0.3rem;
+}
+
+.bp-modal button[type="submit"] {
+  width: 100%;
+  margin-top: 0.5rem;
+}

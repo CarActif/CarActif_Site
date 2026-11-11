@@ -10,7 +10,7 @@ const TechnicalStateCard = ({
 	anneeDistribution
 }) => {
 	return (
-		<section className="ts-section">
+        <section className="ts-section glass-card">
 			<h2 className="ts-title">🛠️ Contrôle Technique & État</h2>
 			{/* Plaquettes Avant */}
 			<div className="ts-plaquettes ts-plaquettes-avant">

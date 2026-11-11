@@ -1,0 +1,8 @@
+.garantie-incluse { padding: 20px; }
+.garantie-incluse__head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+.garantie-incluse__badge { background: #16A34A; color: #fff; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; }
+.garantie-incluse__title { margin: 0; font-size: 1.25rem; }
+.garantie-incluse__liste { margin: 0 0 12px; padding-left: 20px; display: grid; gap: 6px; }
+.garantie-incluse__alerte { background: #FEF3C7; border: 1px solid #FCD34D; border-radius: 10px; padding: 10px 12px; font-size: 0.92rem; }
+.garantie-incluse__extension { margin: 8px 0; font-size: 0.95rem; }
+.garantie-incluse__mention { font-size: 0.8rem; color: #64748B; margin: 10px 0 0; }

@@ -3,7 +3,7 @@ import React from 'react';
 // Fonction utilitaire pour la couleur des pourcentages
 const getColor = (value) => {
   if (typeof value !== 'number') return '#111';
-  if (value <= 31) return '#22c55e'; // vert
+  if (value <= 31) return '#4f46e5';
   if (value <= 71) return '#f59e42'; // orange
   return '#ef4444'; // rouge
 };

@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import supabase from "../supabase";
 import "./AgentPage.css";
 import AgentHeaderCompact from "../components/AgentHeaderCompact";
+import { MANDAT_CARD_SELECT } from "../utils/mandats";
+import ArtworkCard from "../components/ArtworkCard";
 
 export default function AgentPage() {
   const { id } = useParams();
@@ -21,7 +23,7 @@ export default function AgentPage() {
 
       const { data: vehiculesData } = await supabase
         .from("mandats")
-        .select("*")
+        .select(MANDAT_CARD_SELECT)
         .eq("agent_id", id)
         .order("date_ajout", { ascending: false });
 
@@ -55,94 +57,29 @@ export default function AgentPage() {
       </div>
 
       {/* Titre centré, style cohérent */}
-      <h3 className="agent-vehicles-title section-title" style={{ textAlign: "center", margin: "2.5rem 0 2rem 0" }}>
+      <h3 className="agent-vehicles-title section-title agent-vehicles-heading">
         Véhicules en mandat ({vehicules.length})
       </h3>
 
       {/* Grille véhicule identique à Home */}
-      <div className="vehicule-cards-container">
+      <div className="artwork-card-grid">
         {vehicules.length === 0 && (
           <div className="no-vehicles">Aucun véhicule pour cet agent.</div>
         )}
         {vehicules
-          .filter(v => v.statut !== "Mandat signé" && v.statut !== "Archivé")
-          .map((v) => {
-            let badge = null;
-            let imgClass = "";
-            let isVendu = v.statut === "Vendu";
-            if (v.statut === "Sous offre") {
-              badge = <span className="statut-badge statut-offre">Sous offre</span>;
-              imgClass = "img-filter";
-            } else if (isVendu) {
-              badge = <span className="statut-badge statut-vendu">Vendu</span>;
-              imgClass = "img-filter";
-            }
-            if (isVendu) {
-              return (
-                <div
-                  key={v.id}
-                  className="vehicule-card-home vehicule-card-vendu"
-                  style={{ cursor: "not-allowed", textDecoration: "none", color: "inherit", pointerEvents: "none", opacity: 0.85 }}
-                  aria-disabled="true"
-                >
-                  <div className="vehicule-card-home-img-wrapper">
-                    <img
-                      src={v.photo_url?.[0] || "https://via.placeholder.com/300x200"}
-                      alt={`${v.marque} ${v.modele}`}
-                      className={imgClass}
-                    />
-                    <span className="prix-badge">{v.prix_affiche?.toLocaleString()} €</span>
-                    {badge}
-                  </div>
-                  <h4>{v.marque} {v.modele}</h4>
-                  <div className="vehicule-type-line">
-                    <span>
-                      {[v.motorisation, v.version, v.finition, v.puissance].filter(Boolean).join(' ')}
-                    </span>
-                  </div>
-                  <div className="vehicule-details">
-                    <span className="vehicule-detail"><span className="vehicule-detail-emoji">📅</span>{String(v.annee).slice(0,4)}</span>
-                    <span className="vehicule-detail"><span className="vehicule-detail-emoji">⛽️</span>{v.energie || v.carburant || ""}</span>
-                    <span className="vehicule-detail"><span className="vehicule-detail-emoji">🛣️</span>{v.kilometrage?.toLocaleString()} km</span>
-                    <span className="vehicule-detail"><span className="vehicule-detail-emoji">⚙️</span>{v.boite || v.boite_vitesse || ""}</span>
-                  </div>
-                </div>
-              );
-            }
-            return (
-              <Link
-                key={v.id}
-                to={`/vehicules/${v.id}`}
-                className="vehicule-card-home"
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
-                <div className="vehicule-card-home-img-wrapper">
-                  <img
-                    src={v.photo_url?.[0] || "https://via.placeholder.com/300x200"}
-                    alt={`${v.marque} ${v.modele}`}
-                    className={imgClass}
-                  />
-                  <span className="prix-badge">{v.prix_affiche?.toLocaleString()} €</span>
-                  {badge}
-                </div>
-                <h4>{v.marque} {v.modele}</h4>
-                <div className="vehicule-type-line">
-                  <span>
-                    {[v.motorisation, v.version, v.finition, v.puissance].filter(Boolean).join(' ')}
-                  </span>
-                </div>
-                <div className="vehicule-details">
-                  <span className="vehicule-detail"><span className="vehicule-detail-emoji">📅</span>{String(v.annee).slice(0,4)}</span>
-                  <span className="vehicule-detail"><span className="vehicule-detail-emoji">⛽️</span>{v.energie || v.carburant || ""}</span>
-                  <span className="vehicule-detail"><span className="vehicule-detail-emoji">🛣️</span>{v.kilometrage?.toLocaleString()} km</span>
-                  <span className="vehicule-detail"><span className="vehicule-detail-emoji">⚙️</span>{v.boite || v.boite_vitesse || ""}</span>
-                </div>
-              </Link>
-            );
-          })}
+          .filter((v) => v.statut !== "Mandat signé" && v.statut !== "Archivé")
+          .map((v, index) => (
+            <ArtworkCard
+              key={v.id}
+              vehicle={v}
+              index={index}
+              to={v.statut === "Vendu" ? undefined : `/vehicules/${v.id}`}
+              disabled={v.statut === "Vendu"}
+            />
+          ))}
       </div>
       <div className="cta-container">
-        <Link to="/equipe" className="btn-filled">
+        <Link to="/equipe" className="btn-primary">
           ← Retour à l’équipe
         </Link>
       </div>

@@ -1,5 +1,6 @@
 
 
+import usePageMeta from "../lib/usePageMeta";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import supabase from "../supabase";
@@ -17,6 +18,7 @@ function normalize(str) {
 }
 
 export default function Equipe() {
+  usePageMeta('Notre équipe', "Trouvez l'agent CarActif de votre secteur.");
   const [agents, setAgents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -102,7 +104,7 @@ export default function Equipe() {
             filteredAgents.map((agent) => (
               <div
                 key={agent.id}
-                className="equipe-card"
+                className="equipe-card glass-card"
                 tabIndex={0}
                 role="button"
                 aria-label={`Voir le profil de ${agent.prenom || ''} ${agent.nom || ''}`}

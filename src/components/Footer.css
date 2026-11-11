@@ -1,14 +1,8 @@
-footer {
-  background-color: #FFD700;
-  color: white;
-  text-align: center;
-  padding: 1rem;
-  font-size: 0.9rem;
-  margin-top: auto;
-  width: 100%;
+footer.site-footer {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1.5rem;
 }
 
-footer a {
-  color: #FFD700;
-  text-decoration: none;
-}
+.site-footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 20px; margin-bottom: 10px; }

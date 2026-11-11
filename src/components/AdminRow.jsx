@@ -2,7 +2,7 @@ import React from "react";
 
 export default function AdminRow({ avatarSrc, nom, role }) {
   return (
-    <div className="admin-row admin-row-vertical">
+    <div className="admin-row admin-row-vertical glass-card">
       <img src={avatarSrc} alt={nom} className="admin-row-avatar admin-row-avatar-large" />
       <div className="admin-row-info admin-row-info-vertical">
         <span className="admin-row-nom admin-row-nom-large">{nom}</span>

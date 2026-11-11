@@ -69,3 +69,22 @@
     width: 100%;
   }
 }
+
+/* ─── DARK THEME OVERRIDE (Business Plan) ─── */
+.controle-cards-wrapper {
+  background: var(--surface, rgba(255, 255, 255, 0.055));
+  box-shadow: none;
+}
+
+.controle-card {
+  background: var(--surface2, rgba(255, 255, 255, 0.09));
+  box-shadow: none;
+}
+
+.controle-label {
+  color: var(--text2, rgba(245, 245, 247, 0.7));
+}
+
+.controle-value {
+  color: var(--text, #f5f5f7);
+}

@@ -6,14 +6,14 @@ Chart.register(ArcElement, Tooltip);
 
 // Palette imposée
 const COLORS = {
-  vendeur: "var(--caractif-green, #2E7D32)", // Vert CarActif
-  honoraires: "#2196F3", // Bleu
-  decote: "#C62828", // Rouge 800
-  marge: "#E65100", // Orange 900
-  showroom: "#2E7D32", // Vert CarActif (remplace tout noir/brun)
-  equipe: "#F9A825", // Ambre 700
-  assurances: "#455A64", // Bleu-gris 700
-  marketing: "#AD1457", // Rose 800
+  vendeur: "#007aff",
+  honoraires: "#2196F3",
+  decote: "#C62828",
+  marge: "#E65100",
+  showroom: "#6366f1",
+  equipe: "#F9A825",
+  assurances: "#8aa4b3",
+  marketing: "#e0559b",
 };
 
 
@@ -21,7 +21,7 @@ const BASE_PRIX = 40000;
 
 // Données garage pour 40 000 € (total 100%)
 const garageParts = [
-  { label: "Ce que vous touchez (net vendeur)", value: 28400, percent: 71, color: "#2E7D32", textColor: "#FFFFFF" },
+  { label: "Ce que vous touchez (net vendeur)", value: 28400, percent: 71, color: "#007aff", textColor: "#FFFFFF" },
   { label: "Décote de reprise", value: 6000, percent: 15, color: COLORS.decote, textColor: "#FFFFFF" },
   { label: "Marge du garage", value: 2000, percent: 5, color: COLORS.marge, textColor: "#FFFFFF" },
   { label: "Showroom (loyer & charges)", value: 1000, percent: 2.5, color: COLORS.showroom, textColor: "#FFFFFF" },
@@ -33,7 +33,7 @@ const garageParts = [
 // Données CarActif pour 40 000 € (total 100%)
 const carActifParts = [
   { label: "Honoraires CarActif", value: 2490, percent: Math.round(2490 / 40000 * 100), color: COLORS.honoraires, textColor: "#2196F3" },
-  { label: "Montant reçu par le vendeur", value: 37510, percent: Math.round(37510 / 40000 * 100), color: "#2E7D32", textColor: "#FFFFFF" },
+  { label: "Montant reçu par le vendeur", value: 37510, percent: Math.round(37510 / 40000 * 100), color: "#007aff", textColor: "#FFFFFF" },
 ];
 
 // Calculs écart
@@ -55,7 +55,7 @@ function Donut({ parts, netValue, netPercent, baseLabel, legend, centerNote }) {
         data: parts.map(p => p.value),
         backgroundColor: parts.map(p => p.color),
         borderWidth: 2,
-        borderColor: "#fff",
+        borderColor: "#0a0a0f",
         cutout: "60%",
         circumference: 360,
         rotation: -90,
@@ -88,8 +88,8 @@ function Donut({ parts, netValue, netPercent, baseLabel, legend, centerNote }) {
       <div className="donut-chart">
         <Pie data={data} options={options} width={300} height={300} />
         <div className="donut-center">
-          <div className="donut-net" style={{color:'var(--caractif-green, #2E7D32)', fontWeight:700, fontSize:'2.1em'}}>{formatNumber(netValue)} €</div>
-          <div className="donut-percent" style={{color:'#888', fontSize:'1em'}}>{formatPercent(netPercent)}</div>
+          <div className="donut-net">{formatNumber(netValue)} €</div>
+          <div className="donut-percent" style={{color:'rgba(245,245,247,0.42)', fontSize:'1em'}}>{formatPercent(netPercent)}</div>
         </div>
       </div>
       <div className="donut-base">{baseLabel}</div>
@@ -111,7 +111,7 @@ function GarageLegend() {
             borderRadius:'50%',
             background:p.color,
             marginRight:10,
-            border:'1.5px solid #fff'
+            border:'1.5px solid #0a0a0f'
           }}></span>
           <span style={{
             color:p.color,
@@ -138,7 +138,7 @@ function CarActifLegend() {
             borderRadius:'50%',
             background:p.color,
             marginRight:10,
-            border:'1.5px solid #fff'
+            border:'1.5px solid #0a0a0f'
           }}></span>
           <span style={{
             color:p.color,
@@ -177,7 +177,7 @@ export default function ComparatifCamembert() {
           legend={<CarActifLegend />}
           centerNote={
             <div style={{marginTop:'1em',fontSize:'1.05em'}}>
-              <div style={{color:'#888',marginTop:'0.3em'}}>Nos 5 % couvrent tout. Rien d’autre à déduire.</div>
+              <div style={{color:'rgba(245,245,247,0.42)',marginTop:'0.3em'}}>Nos 5 % couvrent tout. Rien d’autre à déduire.</div>
             </div>
           }
         />
@@ -205,10 +205,7 @@ export default function ComparatifCamembert() {
           display: flex;
           flex-direction: column;
           align-items: center;
-          background: #fafbfc;
-          border-radius: 16px;
-          box-shadow: 0 2px 8px #0001;
-          padding: 1em 0.5em 1em 0.5em;
+          padding: 1em 0.5em;
         }
         .donut-chart {
           position: relative;
@@ -225,15 +222,15 @@ export default function ComparatifCamembert() {
         .donut-net {
           font-size: 2.1em;
           font-weight: 700;
-          color: #2ecc40;
+          color: #007aff;
         }
         .donut-percent {
           font-size: 1em;
-          color: #555;
+          color: rgba(245,245,247,0.7);
         }
         .donut-base {
           font-size: 1em;
-          color: #888;
+          color: rgba(245,245,247,0.42);
           margin: 0.7em 0 0.2em 0;
         }
         .donut-legend {
@@ -243,7 +240,7 @@ export default function ComparatifCamembert() {
         }
         .donut-note {
           font-size: 0.95em;
-          color: #008060;
+          color: #8e54e9;
           margin-top: 0.5em;
           text-align: center;
         }
@@ -258,22 +255,22 @@ export default function ComparatifCamembert() {
         }
         .diff-label {
           font-size: 1.1em;
-          color: #222;
+          color: rgba(245,245,247,0.7);
           font-weight: 500;
         }
         .diff-value {
           font-size: 1.7em;
           font-weight: 700;
-          color: #2ecc40;
+          color: #007aff;
         }
         .diff-note {
           font-size: 1em;
-          color: #555;
+          color: rgba(245,245,247,0.55);
         }
         .comparatif-note {
           text-align: center;
           font-size: 0.95em;
-          color: #888;
+          color: rgba(245,245,247,0.42);
           margin-top: 2em;
         }
         @media (max-width: 900px) {

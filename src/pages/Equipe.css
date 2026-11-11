@@ -24,10 +24,7 @@
   align-items: center;
   justify-content: flex-start;
   width: 100%;
-  background: none;
-  box-shadow: none;
-  border-radius: 0;
-  padding: 0.7rem 0.7rem 1.1rem 0.7rem;
+  padding: 1.1rem 0.9rem;
   min-height: 120px;
   max-width: 100%;
 }
@@ -36,7 +33,7 @@
   height: 86px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3.5px solid #05A820;
+  border: 3.5px solid rgba(79, 70, 229, 0.55);
   margin-bottom: 0.7rem;
   background: #fff;
   flex-shrink: 0;
@@ -52,14 +49,14 @@
 .admin-row-nom.admin-row-nom-large {
   font-weight: 700;
   font-size: 1.32rem;
-  color: #232526;
+  color: var(--text);
   margin-bottom: 0.09rem;
   text-align: center;
 }
 .admin-row-role.admin-row-role-small {
   font-weight: 400;
   font-size: 0.98rem;
-  color: #56ab2f;
+  color: var(--accent);
   font-style: italic;
   text-align: center;
 }
@@ -161,15 +158,14 @@
   padding: 0;
   margin: 0;
 }
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
 .equipe-page-wrapper {
   min-height: 100vh;
   width: 100vw;
-  background: linear-gradient(180deg, #F7FCF7 80%, #F7FCF7 10%);
+  background: var(--bg);
   font-family: 'Montserrat', sans-serif;
-  color: #f4f4f4;
-  padding: 2.5rem 0;
+  color: var(--text);
+  padding: 2.6rem 1.25rem 3.4rem;
   overflow-x: hidden;
 }
 
@@ -177,13 +173,13 @@
 
 .equipe-title {
   font-size: 2.1rem;
-  color: #232526;
-  text-shadow: 0 2px 9px #2229;
+  color: var(--text);
+  text-shadow: none;
   font-weight: 700;
   margin-top: 2.2rem;
   margin-bottom: 1.2rem;
   text-align: center;
-  letter-spacing: 0.5px;
+  letter-spacing: var(--tracking-tight);
 }
 .equipe-title-centered {
   text-align: center;
@@ -201,21 +197,21 @@
 .equipe-search-input {
   font-size: 1.08rem;
   padding: 0.7rem 1.2rem;
-  border-radius: 14px;
-  border: 1.6px solid #ede7da;
-  background: #fff;
-  color: #232526;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg-muted);
+  color: var(--text);
   font-family: inherit;
   outline: none;
-  box-shadow: 0 2px 8px #56ab2f22;
+  box-shadow: none;
   margin: 0.2rem 0 0.7rem 0;
   width: 100%;
   max-width: 420px;
   transition: border 0.18s, box-shadow 0.18s;
 }
 .equipe-search-input:focus {
-  border: 1.8px solid #56ab2f;
-  box-shadow: 0 2px 16px #56ab2f33;
+  border: 1px solid rgba(29, 78, 216, 0.4);
+  box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.12);
 }
 @media (max-width: 768px) {
   .equipe-search-input {
@@ -224,7 +220,7 @@
   }
 }
 .equipe-empty {
-  color: #232526;
+  color: var(--text-muted);
   font-size: 1.08rem;
   font-weight: 500;
   margin: 2.2rem auto 1.2rem auto;
@@ -262,10 +258,10 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.2rem;
-  width: 100vw;
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto 2.5rem auto;
-  padding: 0 0;
+  padding: 0;
   box-sizing: border-box;
   overflow-x: hidden;
 }
@@ -298,27 +294,19 @@
 
 /* Card harmonisée */
 .equipe-card {
-  background: #fff;
-  border-radius: 18px;
-  box-shadow: 0 2px 12px rgba(86,171,47,0.09);
   overflow: hidden;
   width: 100%;
   min-width: 0;
   max-width: 100%;
   margin: 0;
-  transition: transform 0.25s, box-shadow 0.25s;
-  border: 1px solid #ede7da;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
   padding: 2.2rem 1rem 1.5rem 1rem;
+  cursor: pointer;
 }
-.equipe-card:hover,
 .equipe-card:focus {
-  transform: translateY(-7px) scale(1.02);
-  box-shadow: 0 10px 24px rgba(86, 171, 47, 0.12), 0 2px 6px #0002;
-  border-color: #56ab2f;
   outline: none;
 }
 .equipe-avatar {
@@ -326,7 +314,7 @@
   height: 100px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3.5px solid #05A820;
+  border: 3.5px solid rgba(79, 70, 229, 0.55);
   margin-bottom: 0.7rem;
   background: #fff;
 }
@@ -338,12 +326,12 @@
   text-align: center;
 }
 .equipe-role {
-  color: #56ab2f;
+  color: #4f46e5;
   font-size: 1rem;
   margin-bottom: 0.5rem;
-  background: #f7fcf7;
+  background: rgba(238, 242, 255, 0.8);
   padding: 0.2rem 0.9rem;
-  border-radius: 8px;
+  border-radius: 999px;
   display: inline-block;
   text-align: center;
 }
@@ -370,5 +358,32 @@
   margin-top: 2.2rem;
   width: 100%;
   text-align: center;
+}
+
+/* ─── DARK THEME OVERRIDE (Business Plan) ─── */
+.admin-row-avatar.admin-row-avatar-large,
+.equipe-avatar {
+  border-color: rgba(0, 122, 255, 0.55);
+  background: var(--surface2);
+}
+
+.equipe-search-input:focus {
+  border-color: rgba(0, 122, 255, 0.4);
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.14);
+}
+
+.equipe-name {
+  color: var(--text);
+}
+
+.equipe-role {
+  color: var(--blue);
+  background: rgba(0, 122, 255, 0.14);
+}
+
+.equipe-contact,
+.equipe-phone,
+.equipe-email {
+  color: var(--text2);
 }
 

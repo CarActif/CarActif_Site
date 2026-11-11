@@ -6,7 +6,7 @@ import pneusSchema from '../../public/transmission.png';
 const VehicleRecapCard = ({ marque, modele, annee, carburant, prix, finition, version, kilometrage, pneus }) => {
   // pneus: { avG, avD, arG, arD }
   return (
-    <div className="vehicle-recap-card">
+    <div className="vehicle-recap-card glass-card">
       <div className="vehicle-recap-header">
         <h3 className="vehicle-recap-title">{marque} {modele}</h3>
         {(finition || version) && (

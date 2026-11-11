@@ -33,7 +33,7 @@ export default function MaintenanceHistory({ entretien }) {
         return (
           <li key={idx} className={`timeline-step timeline-${alt}`}>
             <div className="timeline-dot"></div>
-            <svg className="timeline-connector" viewBox="0 0 32 64" width="32" height="64" aria-hidden="true"><path d="M16 0 Q16 32 16 64" stroke="#05A820" strokeWidth="2" fill="none"/></svg>
+            <svg className="timeline-connector" viewBox="0 0 32 64" width="32" height="64" aria-hidden="true"><path d="M16 0 Q16 32 16 64" stroke="#4f46e5" strokeWidth="2" fill="none"/></svg>
             <div className="timeline-content" tabIndex={0} aria-label={`Intervention du ${formatDate(item.date)} à ${formatKm(item.km)}`}>
               <div className="timeline-header">
                 <span className="timeline-date" title={formatDate(item.date)}>{formatDate(item.date)}</span>

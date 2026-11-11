@@ -4,7 +4,7 @@ import "./AgentHeaderCompact.css";
 
 export default function AgentHeaderCompact({ avatarSrc, fullName, secteur, phone, email }) {
   return (
-    <header className="agent-header-compact-home">
+    <header className="agent-header-compact-home glass-card">
       <div className="agent-header-media-home">
         <div className="agent-header-avatar-wrapper-home">
           <img
