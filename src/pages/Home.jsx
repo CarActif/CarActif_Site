@@ -10,7 +10,7 @@ import { MANDAT_CARD_SELECT } from "../utils/mandats";
 export default function Home() {
   usePageMeta(
     "Vendez votre voiture sans effort",
-    "CarActif vend votre voiture entre particuliers : estimation à domicile, annonce, visites, paiement sécurisé par séquestre et garantie 3 mois incluse. Commission fixe connue d'avance."
+    "CarActif vend votre voiture entre particuliers : estimation à domicile, annonce, visites, paiement sécurisé par séquestre et garantie 3 mois incluse. Estimation gratuite et sans engagement."
   );
   const [vehicules, setVehicules] = useState([]);
   const [heroUrl, setHeroUrl] = useState(""); // <- Ajouté pour l’URL dynamique
@@ -53,7 +53,7 @@ export default function Home() {
         </div>
 
         <ul className="trust-bar">
-          <li>Commission fixe connue d'avance</li>
+          <li>Estimation gratuite, sans engagement</li>
           <li>Paiement sécurisé par séquestre</li>
           <li>Garantie 3 mois incluse</li>
         </ul>

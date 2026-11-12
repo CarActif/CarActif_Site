@@ -5,10 +5,6 @@ import "./Faq.css";
 
 const QUESTIONS = [
   {
-    q: "Combien coûte CarActif ?",
-    r: "La commission est fixe, à partir de 1 490 € TTC selon le prix du véhicule. Elle est indiquée avant la signature du mandat, ajoutée au prix affiché au public et supportée par l'acheteur. Le vendeur reçoit l'intégralité du prix net convenu.",
-  },
-  {
     q: "Dois-je payer quelque chose au départ ?",
     r: "Non. Vous ne payez rien pour l'estimation, la prise de photos, l'annonce ou les visites.",
   },
@@ -50,7 +46,7 @@ const QUESTIONS = [
 ];
 
 export default function Faq() {
-  usePageMeta("Questions fréquentes", "Réponses aux questions fréquentes sur la vente de votre voiture avec CarActif : coût, paiement sécurisé, garantie, documents, délais.");
+  usePageMeta("Questions fréquentes", "Réponses aux questions fréquentes sur la vente de votre voiture avec CarActif : paiement sécurisé, garantie, documents, délais.");
   return (
     <div className="ccm-page">
       <section className="ccm-hero">

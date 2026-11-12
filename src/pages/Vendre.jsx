@@ -10,7 +10,7 @@ export default function Vendre() {
     <div className="vendre-page glass-card">
       <h1>Vendez votre voiture en toute simplicité avec CarActif</h1>
       <p className="intro-text">
-        Vous souhaitez vendre votre véhicule ? Avec <strong>CarActif</strong>, c’est simple et sans avance de frais : vous ne payez rien tant que le véhicule n’est pas vendu.
+        Vous souhaitez vendre votre véhicule ? Avec <strong>CarActif</strong>, c’est simple et sans avance de frais : un agent s’occupe de tout.
         Un agent se déplace pour une estimation gratuite de votre voiture. Nous nous occupons de tout, de l’annonce à la remise du véhicule.
       </p>
 
@@ -22,13 +22,13 @@ export default function Vendre() {
         </div>
         <div className="advantage-card glass-card">
           <span className="emoji">💸</span>
-          <h3>Vendez au meilleur prix</h3>
-          <p>Vous vendez au prix du marché, sans commission de reprise. Gagnez jusqu’à 20 % de plus qu’en passant par une concession.</p>
+          <h3>Vendez au prix du marché</h3>
+          <p>Vous vendez directement à un particulier, au prix du marché, sans passer par une reprise de concession.</p>
         </div>
         <div className="advantage-card glass-card">
           <span className="emoji">🎯</span>
           <h3>Multipliez vos acheteurs potentiels</h3>
-          <p>Vous touchez les acheteurs qui cherchent chez les pros et ceux qui regardent chez les particuliers. 100 % du marché couvert.</p>
+          <p>Votre annonce est diffusée pour toucher le plus grand nombre d’acheteurs, particuliers comme professionnels.</p>
         </div>
         <div className="advantage-card glass-card">
           <span className="emoji">🔒</span>
@@ -45,9 +45,6 @@ export default function Vendre() {
       <div className="info-section">
         <p>
           🔹 <strong>Avec CarActif, vous gardez les avantages d’une vente entre particuliers</strong>, mais avec la sécurité et l’accompagnement d’un professionnel.
-        </p>
-        <p>
-          🔹 <strong>100 % gratuit pour vous</strong> — Notre rémunération est prise en charge par l’acheteur.
         </p>
         <p>
           🔹 <strong>Une vente suivie</strong> : un point d’étape régulier avec votre agent jusqu’au versement final.

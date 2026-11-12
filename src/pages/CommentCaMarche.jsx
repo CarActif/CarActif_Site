@@ -38,7 +38,7 @@ const ETAPES = [
     numero: 6,
     titre: "Remise du véhicule & versement",
     texte:
-      "Le véhicule est remis à l'acheteur, puis vous recevez l'intégralité du prix net convenu lors de la signature du mandat, sans frais caché ni surprise. La commission de CarActif est ajoutée au prix affiché et supportée par l'acheteur.",
+      "Le véhicule est remis à l'acheteur, puis vous recevez le prix net convenu lors de la signature du mandat.",
   },
 ];
 
@@ -181,16 +181,10 @@ export default function CommentCaMarche() {
         </div>
       </section>
 
-      <section className="ccm-section ccm-commission">
+      <section className="ccm-section ccm-garantie">
         <div className="chip-header" role="heading" aria-level="2">
-          <span className="chip-title"><span className="chip-bold">Et la commission ?</span></span>
+          <span className="chip-title"><span className="chip-bold">Et la garantie ?</span></span>
         </div>
-        <p>
-          La commission de CarActif est <strong>fixe</strong> et connue avant la signature du mandat :
-          à partir de <strong>1 490 € TTC</strong>, selon le prix du véhicule. Elle est ajoutée au prix affiché
-          au public et c'est l'acheteur qui la supporte. Vous, vendeur, touchez l'intégralité du prix net
-          convenu avec votre commercial, sans frais caché.
-        </p>
         <p>
           Une garantie mécanique de 3 mois est incluse pour l'acheteur (véhicules éligibles).{" "}
           <Link to="/garantie" className="link-accent">Voir le détail de la garantie</Link>.

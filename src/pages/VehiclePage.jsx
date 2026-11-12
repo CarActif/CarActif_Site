@@ -81,12 +81,12 @@ export default function VehiclePage() {
   ];
 
   const onglets = [
-    { id: "pneus", label: "Pneumatiques", icone: CircleDot },
-    { id: "freinage", label: "Freinage", icone: Disc3 },
-    { id: "distribution", label: "Distribution", icone: Link2 },
-    { id: "moteur", label: "Moteur", icone: Cog },
+    { id: "pneus", label: "Pneus et freinage", icone: CircleDot },
+    { id: "moteur", label: "Moteur et distribution", icone: Cog },
     { id: "carrosserie", label: "Carrosserie", icone: Car },
-    { id: "essai", label: "Test de conduite", icone: Wrench },
+    { id: "interieur", label: "Intérieur", icone: Armchair },
+    { id: "essai", label: "Essai routier", icone: Gauge },
+    { id: "entretien", label: "Entretien", icone: ClipboardList },
   ];
 
   return (
@@ -208,33 +208,34 @@ export default function VehiclePage() {
                           })}
                         </tbody>
                       </table>
+                      <dl className="vp-lignes vp-lignes--une vp-freins">
+                        <Ligne label="Plaquettes avant">{v.plaquettes_av || "NC"}</Ligne>
+                        <Ligne label="Plaquettes arrière">{v.plaquettes_ar || "NC"}</Ligne>
+                      </dl>
                     </div>
-                  )}
-                  {onglet === "freinage" && (
-                    <dl className="vp-lignes vp-lignes--une">
-                      <Ligne label="Plaquettes avant">{v.plaquettes_av || "NC"}</Ligne>
-                      <Ligne label="Plaquettes arrière">{v.plaquettes_ar || "NC"}</Ligne>
-                    </dl>
-                  )}
-                  {onglet === "distribution" && (
-                    <dl className="vp-lignes vp-lignes--une">
-                      <Ligne label="Type de distribution">{v.type_distribution || "NC"}</Ligne>
-                      <Ligne label="Dernière distribution">{v.annee_distribution || "NC"}</Ligne>
-                    </dl>
                   )}
                   {onglet === "moteur" && (
                     <dl className="vp-lignes vp-lignes--une">
                       <Ligne label="État de l'huile">{v.huile_moteur || "NC"}</Ligne>
                       <Ligne label="Fuite d'huile">{v.fuite_huile || "NC"}</Ligne>
                       <Ligne label="État de l'embrayage">{v.embrayage || "NC"}</Ligne>
+                      <Ligne label="Type de distribution">{v.type_distribution || "NC"}</Ligne>
+                      <Ligne label="Dernière distribution">{v.annee_distribution || "NC"}</Ligne>
                     </dl>
                   )}
                   {onglet === "carrosserie" && (
                     <dl className="vp-lignes vp-lignes--une">
-                      <Ligne label="État carrosserie">{v.carrosserie || "NC"}</Ligne>
-                      <Ligne label="État intérieur">{v.interieur || "NC"}</Ligne>
+                      <Ligne label="État de la carrosserie">{v.carrosserie || "NC"}</Ligne>
+                      <Ligne label="Couleur extérieure">{v.couleur}</Ligne>
                     </dl>
                   )}
+                  {onglet === "interieur" && (
+                    <dl className="vp-lignes vp-lignes--une">
+                      <Ligne label="État intérieur">{v.interieur || "NC"}</Ligne>
+                      <Ligne label="Couleur intérieure">{v.couleur_interieure}</Ligne>
+                    </dl>
+                  )}
+                  {onglet === "entretien" && <MaintenanceHistory entretien={v.entretien} />}
                   {onglet === "essai" && (
                     <div>
                       <dl className="vp-lignes vp-lignes--une">
@@ -245,10 +246,6 @@ export default function VehiclePage() {
                   )}
                 </div>
               </div>
-            </Fiche>
-
-            <Fiche titre="Historique d'entretien" icone={Wrench}>
-              <MaintenanceHistory entretien={v.entretien} />
             </Fiche>
 
             {v.equipements?.length > 0 && (

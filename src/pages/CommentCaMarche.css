@@ -101,14 +101,14 @@
   margin-bottom: 0.3rem;
 }
 
-.ccm-commission {
+.ccm-garantie {
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;
   text-align: center;
 }
 
-.ccm-commission p {
+.ccm-garantie p {
   color: var(--text-muted);
   font-size: 1.05rem;
   line-height: 1.6;
