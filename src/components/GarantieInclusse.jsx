@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import supabase from "../supabase";
 import { GARANTIE_INCLUSE_DEFAUT, AVANTAGES_GARANTIE, eligibiliteGarantie } from "../lib/garantieInclusse";
+import GarantieSimulateur from "./GarantieSimulateur";
 import "./GarantieInclusse.css";
 
 export default function GarantieInclusse({ annee, kilometrage }) {
@@ -49,10 +50,7 @@ export default function GarantieInclusse({ annee, kilometrage }) {
         </>
       )}
 
-      <p className="garantie-incluse__extension">
-        Une extension de garantie (durée plus longue ou niveau de couverture supérieur) peut être proposée
-        par votre agent, selon l'âge et le kilométrage du véhicule.
-      </p>
+      <GarantieSimulateur annee={annee} kilometrage={kilometrage} />
       <Link to="/garantie" className="link-accent">Voir le détail de la garantie</Link>
       <p className="garantie-incluse__mention">
         Couverture sous conditions, avec vétusté. Les conditions générales et particulières sont remises à l'acheteur.
