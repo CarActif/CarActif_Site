@@ -9,28 +9,50 @@ function formatDate(iso) {
   return new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
 }
 
-function PosteCard({ poste }) {
-  const [open, setOpen] = useState(false);
-
+function PosteCard({ poste, index, onPostuler }) {
   return (
-    <div className="poste-card glass-card">
+    <article className="poste-card glass-card" style={{ animationDelay: `${index * 80}ms` }}>
       <div className="poste-card-header">
         <div>
           <h2>{poste.titre}</h2>
-          <p className="poste-card-meta">
-            {poste.type_contrat} · {poste.lieu} · Publié le {formatDate(poste.created_at)}
-          </p>
+          <div className="poste-card-chips">
+            {poste.type_contrat && <span className="poste-chip poste-chip-strong">{poste.type_contrat}</span>}
+            {poste.lieu && <span className="poste-chip">{poste.lieu}</span>}
+            <span className="poste-chip poste-chip-soft">Publié le {formatDate(poste.created_at)}</span>
+          </div>
         </div>
-        <button type="button" className="btn-primary" onClick={() => setOpen((o) => !o)}>
-          {open ? "Fermer" : "Postuler"}
-        </button>
       </div>
       <p className="poste-card-description">{poste.description}</p>
-      {open && (
-        <div className="poste-card-form">
-          <CandidatureForm posteId={poste.id} />
-        </div>
-      )}
+      <button type="button" className="btn-primary poste-card-cta" onClick={() => onPostuler(poste)}>
+        Postuler à cette offre <span aria-hidden="true">→</span>
+      </button>
+    </article>
+  );
+}
+
+function PostulerModal({ poste, onClose }) {
+  useEffect(() => {
+    const onKey = (e) => e.key === "Escape" && onClose();
+    document.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [onClose]);
+
+  return (
+    <div className="postuler-overlay" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
+      <div className="postuler-modal" role="dialog" aria-modal="true" aria-label="Postuler">
+        <button type="button" className="postuler-close" onClick={onClose} aria-label="Fermer">×</button>
+        <p className="postuler-eyebrow">{poste ? "Votre candidature pour" : "Candidature spontanée"}</p>
+        <h2 className="postuler-title">{poste ? poste.titre : "Parlez-nous de vous"}</h2>
+        {poste && (
+          <p className="postuler-sub">{[poste.type_contrat, poste.lieu].filter(Boolean).join(" · ")}</p>
+        )}
+        <CandidatureForm posteId={poste ? poste.id : null} />
+      </div>
     </div>
   );
 }
@@ -39,7 +61,7 @@ export default function Recrutement() {
   usePageMeta("Recrutement", "Rejoignez CarActif : postes de commerciaux indépendants dans les Hauts-de-France et candidature spontanée.");
   const [postes, setPostes] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [spontaneeOpen, setSpontaneeOpen] = useState(false);
+  const [modal, setModal] = useState(null); // { poste } ou null
 
   useEffect(() => {
     const load = async () => {
@@ -70,22 +92,20 @@ export default function Recrutement() {
             ci-dessous.
           </p>
         )}
-        {postes.map((poste) => (
-          <PosteCard key={poste.id} poste={poste} />
+        {postes.map((poste, i) => (
+          <PosteCard key={poste.id} poste={poste} index={i} onPostuler={(p) => setModal({ poste: p })} />
         ))}
       </section>
 
       <section className="recrutement-spontanee glass-card">
-        <h2>✍️ Candidature spontanée</h2>
+        <h2>Candidature spontanée</h2>
         <p>Pas de poste qui correspond à ce que vous cherchez ? Parlez-nous de vous.</p>
-        {!spontaneeOpen ? (
-          <button type="button" className="btn-primary" onClick={() => setSpontaneeOpen(true)}>
-            Envoyer une candidature spontanée
-          </button>
-        ) : (
-          <CandidatureForm posteId={null} />
-        )}
+        <button type="button" className="btn-secondary" onClick={() => setModal({ poste: null })}>
+          Envoyer une candidature spontanée
+        </button>
       </section>
+
+      {modal && <PostulerModal poste={modal.poste} onClose={() => setModal(null)} />}
     </div>
   );
 }

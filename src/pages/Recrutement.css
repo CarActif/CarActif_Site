@@ -35,7 +35,167 @@
 }
 
 .poste-card {
-  padding: 1.5rem;
+  position: relative;
+  padding: 1.6rem 1.6rem 1.5rem 1.9rem;
+  overflow: hidden;
+  opacity: 0;
+  animation: poste-in 0.5s ease forwards;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.poste-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, var(--blue), var(--navy));
+}
+
+.poste-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+@keyframes poste-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.poste-card-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.poste-chip {
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 0.22rem 0.7rem;
+  border-radius: 999px;
+  background: var(--bg-muted);
+  color: var(--text2);
+}
+
+.poste-chip-strong {
+  background: var(--accent-light);
+  color: var(--blue);
+  font-weight: 600;
+}
+
+.poste-chip-soft {
+  background: transparent;
+  color: var(--text3);
+  padding-left: 0.2rem;
+}
+
+.poste-card-cta {
+  margin-top: 1.25rem;
+  gap: 0.5rem;
+}
+
+.poste-card-cta span {
+  transition: transform 0.2s ease;
+}
+
+.poste-card-cta:hover span {
+  transform: translateX(4px);
+}
+
+/* Fenêtre de candidature */
+.postuler-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(11, 26, 46, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: overlay-in 0.25s ease;
+}
+
+.postuler-modal {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+  background: var(--surface-solid);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  padding: 2rem 1.75rem 1.75rem;
+  animation: modal-in 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.postuler-close {
+  position: absolute;
+  top: 0.9rem;
+  right: 1rem;
+  width: 2.2rem;
+  height: 2.2rem;
+  border: 0;
+  border-radius: 50%;
+  background: var(--bg-muted);
+  color: var(--text);
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.postuler-close:hover {
+  background: var(--border);
+  transform: rotate(90deg);
+}
+
+.postuler-eyebrow {
+  margin: 0 0 0.25rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--blue);
+}
+
+.postuler-title {
+  margin: 0 2.5rem 0.25rem 0;
+  font-size: 1.4rem;
+  color: var(--text);
+}
+
+.postuler-sub {
+  margin: 0 0 1.25rem;
+  color: var(--text3);
+  font-size: 0.9rem;
+}
+
+@keyframes overlay-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modal-in {
+  from { opacity: 0; transform: translateY(24px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (max-width: 600px) {
+  .postuler-overlay { align-items: flex-end; padding: 0; }
+  .postuler-modal {
+    max-width: none;
+    max-height: 92vh;
+    border-radius: 24px 24px 0 0;
+    animation-name: sheet-in;
+  }
+}
+
+@keyframes sheet-in {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
 }
 
 .poste-card-header {
@@ -63,12 +223,6 @@
   color: var(--text-muted);
   line-height: 1.6;
   white-space: pre-line;
-}
-
-.poste-card-form {
-  margin-top: 1.5rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--border, #e5e7eb);
 }
 
 .recrutement-spontanee {
