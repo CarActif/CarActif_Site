@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { ScanSearch, X, ChevronLeft, ChevronRight } from "lucide-react";
+import CarFace from "./CarFace";
 import "./DefautsVehicule.css";
 
 const FACES = [
@@ -9,44 +10,24 @@ const FACES = [
   { id: "arriere", label: "Arrière" },
 ];
 
-function Voiture({ face }) {
-  const props = { fill: "none", stroke: "currentColor", strokeWidth: 2.5, strokeLinecap: "round", strokeLinejoin: "round", "aria-hidden": true };
-  if (face === "avant" || face === "arriere") {
-    return (
-      <svg viewBox="0 0 80 56" className="dv-icone" {...props}>
-        <path d="M16 24 L22 10 Q23 8 26 8 H54 Q57 8 58 10 L64 24" />
-        <rect x="8" y="24" width="64" height="20" rx="6" />
-        <path d="M20 24 L24 14 H56 L60 24" />
-        <circle cx="19" cy="34" r="3.2" fill={face === "avant" ? "currentColor" : "none"} />
-        <circle cx="61" cy="34" r="3.2" fill={face === "avant" ? "currentColor" : "none"} />
-        <path d="M32 36 H48" />
-        <rect x="12" y="44" width="10" height="8" rx="2" />
-        <rect x="58" y="44" width="10" height="8" rx="2" />
-      </svg>
-    );
-  }
-  return (
-    <svg viewBox="0 0 120 56" className="dv-icone" {...props} style={face === "droite" ? { transform: "scaleX(-1)" } : undefined}>
-      <path d="M6 38 V30 Q6 26 10 25 L28 22 L40 10 Q42 8 46 8 H78 Q82 8 85 11 L96 22 L110 25 Q114 26 114 30 V38 Q114 41 111 41 H104" />
-      <path d="M16 41 H34 M82 41 H88" />
-      <path d="M40 22 L48 12 H62 V22 Z M66 22 V12 H78 L88 22 Z" />
-      <circle cx="26" cy="41" r="9" />
-      <circle cx="96" cy="41" r="9" />
-    </svg>
-  );
-}
-
 export default function DefautsVehicule({ defauts }) {
-  const liste = useMemo(
-    () => (Array.isArray(defauts) ? defauts.filter((d) => d && d.url && FACES.some((f) => f.id === d.face)) : []),
-    [defauts]
-  );
-  const premiere = FACES.find((f) => liste.some((d) => d.face === f.id))?.id ?? null;
+  const src = defauts && typeof defauts === "object" && !Array.isArray(defauts) ? defauts : {};
+  const info = useMemo(() => {
+    const o = {};
+    for (const f of FACES) {
+      const d = src[f.id] || {};
+      const photos = Array.isArray(d.photos) ? d.photos.filter((p) => p && p.url) : [];
+      o[f.id] = { actif: !!d.actif, note: d.note || "", photos };
+    }
+    return o;
+  }, [defauts]); // eslint-disable-line react-hooks/exhaustive-deps
+  const nbFaces = FACES.filter((f) => info[f.id].actif).length;
+  const premiere = FACES.find((f) => info[f.id].actif)?.id ?? null;
   const [face, setFace] = useState(premiere);
-  const [zoom, setZoom] = useState(null); // index dans photosFace
+  const [zoom, setZoom] = useState(null);
 
   useEffect(() => { setFace(premiere); }, [premiere]);
-  const photosFace = liste.filter((d) => d.face === face);
+  const photosFace = face ? info[face].photos : [];
 
   useEffect(() => {
     if (zoom == null) return undefined;
@@ -59,39 +40,47 @@ export default function DefautsVehicule({ defauts }) {
     return () => window.removeEventListener("keydown", onKey);
   }, [zoom, photosFace.length]);
 
-  if (liste.length === 0) return null;
-  const nb = liste.length;
+
+  const cur = face ? info[face] : null;
 
   return (
     <section className="vp-carte dv">
       <h2 className="vp-carte__titre"><ScanSearch size={20} aria-hidden="true" />Défauts apparents</h2>
       <p className="dv-intro">
-        Chez CarActif, on joue la transparence : {nb} défaut{nb > 1 ? "s" : ""} signalé{nb > 1 ? "s" : ""} sur ce véhicule.
-        Touchez une face pour voir les photos.
+        {nbFaces === 0
+          ? "Chez CarActif, on joue la transparence : aucun défaut apparent signalé sur ce véhicule."
+          : `Chez CarActif, on joue la transparence : ${nbFaces === 1 ? "1 face présente" : `${nbFaces} faces présentent`} un défaut. Touchez une face pour le voir.`}
       </p>
 
       <div className="dv-faces">
         {FACES.map((f) => {
-          const n = liste.filter((d) => d.face === f.id).length;
-          const actif = n > 0;
+          const actif = info[f.id].actif;
+          const n = info[f.id].photos.length;
           return (
             <button key={f.id} type="button" disabled={!actif}
               className={"dv-face" + (actif ? " dv-face--defaut" : " dv-face--ras") + (f.id === face && actif ? " on" : "")}
               onClick={() => { setFace(f.id); setZoom(null); }}
               aria-pressed={f.id === face && actif}
-              aria-label={actif ? `${f.label} : ${n} défaut${n > 1 ? "s" : ""}` : `${f.label} : rien à signaler`}>
-              <span className="dv-visuel"><Voiture face={f.id} /></span>
+              aria-label={actif ? `${f.label} : défaut signalé` : `${f.label} : rien à signaler`}>
+              <span className="dv-visuel">
+                <CarFace face={f.id} className="dv-icone" body={actif ? "#fdba74" : "#cbd5e1"} shade={actif ? "#ea580c" : "#94a3b8"} />
+              </span>
               <span className="dv-nom">{f.label}</span>
-              {actif ? <span className="dv-badge">{n}</span> : <span className="dv-ras">Rien à signaler</span>}
+              {actif ? <span className="dv-etat">Défaut signalé</span> : <span className="dv-ras">Rien à signaler</span>}
+              {actif && n > 0 && <span className="dv-badge">{n}</span>}
             </button>
           );
         })}
       </div>
 
+      {cur && cur.actif && (cur.note || cur.photos.length === 0) && (
+        <p className="dv-note">{cur.note || "Défaut signalé, votre agent vous donne le détail."}</p>
+      )}
+
       {photosFace.length > 0 && (
         <ul className="dv-photos">
           {photosFace.map((d, i) => (
-            <li key={d.id || i}>
+            <li key={d.url + i}>
               <button type="button" className="dv-photo" onClick={() => setZoom(i)}>
                 <img src={d.url} alt={d.note || "Défaut apparent"} loading="lazy" />
                 {d.note && <span>{d.note}</span>}
