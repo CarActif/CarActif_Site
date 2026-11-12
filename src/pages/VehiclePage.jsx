@@ -9,6 +9,7 @@ import usePageMeta from "../lib/usePageMeta";
 import PneusSchema, { versNombre, couleurContinue, etatUsure } from "../components/PneusSchema";
 import GarantieInclusse from "../components/GarantieInclusse";
 import MaintenanceHistory from "../components/MaintenanceHistory";
+import DefautsVehicule from "../components/DefautsVehicule";
 import { getAnneeYear } from "../utils/mandats";
 import { getBoiteVitesseFromVehicle } from "../utils/boiteVitesse";
 import "./VehiclePage.css";
@@ -247,6 +248,8 @@ export default function VehiclePage() {
                 </div>
               </div>
             </Fiche>
+
+            <DefautsVehicule defauts={v.defauts} />
 
             {v.equipements?.length > 0 && (
               <Fiche titre="Équipements" icone={Armchair}>
