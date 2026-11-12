@@ -1,11 +1,11 @@
 .dv-intro { margin: 0 0 14px; font-size: .92rem; color: #475569; }
-.dv-faces { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-.dv-face { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 14px 6px 10px; border-radius: 12px; border: 2px solid #d3d9e3; background: #fff; font: inherit; cursor: pointer; color: #0b2545; transition: border-color .15s, box-shadow .15s; }
+.dv-faces { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.dv-face { min-width: 0; position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 14px 6px 10px; border-radius: 12px; border: 2px solid #d3d9e3; background: #fff; font: inherit; cursor: pointer; color: #0b2545; transition: border-color .15s, box-shadow .15s; }
 .dv-face--defaut:hover { border-color: #ea580c; }
 .dv-face--defaut.on { border-color: #ea580c; box-shadow: 0 0 0 3px rgba(234,88,12,.15); background: #fff7ed; color: #c2410c; }
 .dv-face--ras { cursor: default; background: #f1f5f9; border-color: #e3e8f0; }
 .dv-visuel { display: block; }
-.dv-icone { height: 54px; width: auto; display: block; }
+.dv-icone { height: 54px; width: auto; max-width: 100%; display: block; }
 .dv-face--ras .dv-visuel { filter: blur(3.5px); opacity: .6; }
 .dv-nom { font-size: .8rem; font-weight: 600; color: #334155; }
 .dv-face--ras .dv-nom { filter: blur(1.5px); opacity: .6; }
@@ -24,4 +24,4 @@
 .dv-x, .dv-nav { position: absolute; border: 0; background: rgba(255,255,255,.14); color: #fff; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 .dv-x { top: 16px; right: 16px; } .dv-nav { top: 50%; transform: translateY(-50%); }
 .dv-nav--g { left: 14px; } .dv-nav--d { right: 14px; }
-@media (max-width: 480px) { .dv-faces { gap: 8px; } .dv-nom { font-size: .7rem; } .dv-icone { height: 42px; } }
+@media (max-width: 480px) { .dv-faces { gap: 6px; } .dv-face { padding: 12px 4px 8px; } .dv-nom { font-size: .68rem; } .dv-icone { height: auto; max-height: 40px; } .dv-etat, .dv-ras { font-size: .62rem; text-align: center; } }

@@ -66,6 +66,8 @@ export default async function handler(req, res) {
     // remplit tous les champs d'un formulaire le remplira aussi ; un humain ne
     // le voit jamais et le laisse vide.
     societeSite,
+    // "estimation" : demande de rappel pour estimer un véhicule, sans code postal obligatoire.
+    source,
   } = body;
 
   // Honeypot déclenché : on répond succès (pour ne pas renseigner le bot sur
@@ -94,7 +96,7 @@ export default async function handler(req, res) {
   const hasCp = cp.length > 0;
   const hasDept = dept.length > 0;
 
-  if (!hasCp && !hasDept) {
+  if (!hasCp && !hasDept && source !== "estimation") {
     return res
       .status(400)
       .json({ success: false, error: "Merci de renseigner un code postal ou un département." });
