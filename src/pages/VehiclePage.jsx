@@ -254,7 +254,7 @@ export default function VehiclePage() {
               </Fiche>
             )}
 
-            <GarantieInclusse annee={v.annee} kilometrage={v.kilometrage} />
+            <GarantieInclusse annee={v.annee} kilometrage={v.kilometrage} marque={v.marque} />
           </main>
 
           <aside className="vp-lateral">

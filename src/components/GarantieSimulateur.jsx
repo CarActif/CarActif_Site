@@ -5,7 +5,7 @@ import "./GarantieSimulateur.css";
 const eur = (n) =>
   Number(n).toLocaleString("fr-FR", { minimumFractionDigits: Number.isInteger(Number(n)) ? 0 : 2, maximumFractionDigits: 2 }) + " €";
 
-export default function GarantieSimulateur({ annee, kilometrage }) {
+export default function GarantieSimulateur({ annee, kilometrage, marque }) {
   const [niveaux, setNiveaux] = useState(null);
   const [duree, setDuree] = useState(null);
   const [code, setCode] = useState(null);
@@ -16,7 +16,7 @@ export default function GarantieSimulateur({ annee, kilometrage }) {
     const km = Number(kilometrage);
     if (!a || !Number.isFinite(km)) return setNiveaux([]);
     let actif = true;
-    supabase.rpc("garantie_simulation", { p_annee: a, p_km: km }).then(({ data, error }) => {
+    supabase.rpc("garantie_simulation", { p_annee: a, p_km: km, p_marque: marque ?? null }).then(({ data, error }) => {
       if (!actif) return;
       const liste = !error && Array.isArray(data) ? data : [];
       setNiveaux(liste);
@@ -27,7 +27,7 @@ export default function GarantieSimulateur({ annee, kilometrage }) {
       }
     });
     return () => { actif = false; };
-  }, [annee, kilometrage]);
+  }, [annee, kilometrage, marque]);
 
   const dureesDispo = useMemo(
     () => [...new Set((niveaux || []).flatMap((n) => n.durees.map((d) => d.duree)))].sort((a, b) => a - b),

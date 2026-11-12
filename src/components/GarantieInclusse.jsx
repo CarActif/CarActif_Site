@@ -5,7 +5,7 @@ import { GARANTIE_INCLUSE_DEFAUT, AVANTAGES_GARANTIE, eligibiliteGarantie } from
 import GarantieSimulateur from "./GarantieSimulateur";
 import "./GarantieInclusse.css";
 
-export default function GarantieInclusse({ annee, kilometrage }) {
+export default function GarantieInclusse({ annee, kilometrage, marque }) {
   const [niveau, setNiveau] = useState(GARANTIE_INCLUSE_DEFAUT);
 
   useEffect(() => {
@@ -50,7 +50,7 @@ export default function GarantieInclusse({ annee, kilometrage }) {
         </>
       )}
 
-      <GarantieSimulateur annee={annee} kilometrage={kilometrage} />
+      <GarantieSimulateur annee={annee} kilometrage={kilometrage} marque={marque} />
       <Link to="/garantie" className="link-accent">Voir le détail de la garantie</Link>
       <p className="garantie-incluse__mention">
         Couverture sous conditions, avec vétusté. Les conditions générales et particulières sont remises à l'acheteur.
